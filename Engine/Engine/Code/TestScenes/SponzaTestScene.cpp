@@ -114,7 +114,7 @@ SponzaTestScene::SponzaTestScene()
 
 	// create water
 	Entity* water = new Entity();
-	water->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30.0f, 1.75f, 50), XMFLOAT3(0, 0, 0), XMFLOAT3(4, 1, 4));
+	water->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30.0f, 1.75f, 50), XMFLOAT3(0, 0, 0), XMFLOAT3(4.1f, 1, 4.1f));
 	water->AddComponent<ModelComponent>()->InitModel("models/waterPlane.obj", ALPHA_WATER, L"", L"Textures/waterNormal.dds", L"Textures/FlatHighSpecular.dds", L"", false, 3.0f);;
 	water->AddComponent<UVScrollComponent>()->Init(XMFLOAT2(0.04f, 0.02f));
 
@@ -135,6 +135,7 @@ SponzaTestScene::SponzaTestScene()
 	waterSettings->applyFoam             = false;
 	waterSettings->foamToDepth           = 1.0f;
 	waterSettings->reflectivePower       = 1.0f;
+	waterSettings->fadeToDepth = 0.5f;
 
 	Entity* fountain = new Entity();
 	fountain->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30.0f, 0.0f, 50.0f), XMFLOAT3(0, 0, 0), XMFLOAT3(4, 3, 4));

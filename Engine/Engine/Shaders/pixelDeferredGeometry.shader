@@ -51,9 +51,7 @@ Output Main(PixelInputType input)
 	output.diffuse  = float4(textureColor.rgb, 1);
 	output.specular = specularMap;
 	
-	// if the pixel is emissive is stored in the alpha channel of the emissive map
-	// if it is we will multiply the diffuse color with the emisive color and flag 
-	// the alpha channel with 0 so the deferred ligtning pass can check for this and
+	// flag the alpha channel with 0 so the deferred ligtning pass can check for this and
 	// know if it should perfom lightning calculations or not on this pixel
 	if (emissiveMap.r + emissiveMap.g + emissiveMap.b > 0.1)	
 		output.diffuse = float4(emissiveMap.rgb * 1.1, 0);

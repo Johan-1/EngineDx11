@@ -28,7 +28,7 @@ PlanarReflectionShader::PlanarReflectionShader()
 	SHADER_HELPERS::CreateConstantBuffer(_CBVertex);
 	SHADER_HELPERS::CreateConstantBuffer(_CBReflect);
 
-	_simpleClipShaderReflection = new SimpleClipSceneShader();
+	_simpleClipShaderReflection = new SimpleClipSceneShader(1920, 1080);
 }
 
 PlanarReflectionShader::~PlanarReflectionShader()

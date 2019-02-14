@@ -28,8 +28,8 @@ WaterShader::WaterShader()
 	SHADER_HELPERS::CreateConstantBuffer(_CBVertex);
 	SHADER_HELPERS::CreateConstantBuffer(_CBPixel);
 
-	_simpleClipShaderReflection = new SimpleClipSceneShader();
-	_simpleClipShaderRefraction = new SimpleClipSceneShader();
+	_simpleClipShaderReflection = new SimpleClipSceneShader(1920, 1080);
+	_simpleClipShaderRefraction = new SimpleClipSceneShader(1920, 1080);
 }
 
 WaterShader::~WaterShader()

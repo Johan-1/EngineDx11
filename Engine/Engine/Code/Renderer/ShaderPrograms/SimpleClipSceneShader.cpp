@@ -15,7 +15,7 @@
 #include "MathHelpers.h"
 #include "InstancedModel.h"
 
-SimpleClipSceneShader::SimpleClipSceneShader()
+SimpleClipSceneShader::SimpleClipSceneShader(const unsigned int resX, const unsigned int resY)
 {
 	// create shaders
 	SHADER_HELPERS::CreateVertexShader(L"shaders/vertexSimpleClip.shader", _vertexShader, vertexShaderByteCode);
@@ -28,7 +28,7 @@ SimpleClipSceneShader::SimpleClipSceneShader()
 	SHADER_HELPERS::CreateConstantBuffer(_CBVertexInstanced);
 
 	// create render texture
-	_renderTexture = new RenderToTexture((unsigned int)SystemSettings::SCREEN_WIDTH, (unsigned int)SystemSettings::SCREEN_HEIGHT, false, SystemSettings::USE_HDR, false);
+	_renderTexture = new RenderToTexture(resX, resY, false, SystemSettings::USE_HDR, false);
 }
 
 SimpleClipSceneShader::~SimpleClipSceneShader()

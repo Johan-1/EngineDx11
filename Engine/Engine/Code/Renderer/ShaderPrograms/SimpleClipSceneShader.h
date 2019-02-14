@@ -15,7 +15,7 @@ class InstancedModel;
 class SimpleClipSceneShader
 {
 public:
-	SimpleClipSceneShader();
+	SimpleClipSceneShader(const unsigned int resX, const unsigned int resY);
 	~SimpleClipSceneShader();
 
 	void RenderScene(std::vector<Mesh*>& opaqueMeshes, std::vector<Mesh*>& alphaMeshes, std::vector<InstancedModel*>& instancedModels, XMFLOAT4 clipPlane, bool includeSkyBox = true, bool includeParticles = true);
