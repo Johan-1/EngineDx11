@@ -191,12 +191,12 @@ namespace GUI
 		OPENFILENAME ofn;
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner = NULL;
+		ofn.hwndOwner   = NULL;
 		ofn.lpstrFilter = filter;
-		ofn.lpstrFile = filename;
-		ofn.nMaxFile = MAX_PATH;
-		ofn.lpstrTitle = title;
-		ofn.Flags = 0;
+		ofn.lpstrFile   = filename;
+		ofn.nMaxFile    = MAX_PATH;
+		ofn.lpstrTitle  = title;
+		ofn.Flags       = 0;
 		ofn.lpstrDefExt = ".json";
 
 		// we have to save the current directory before we open the openfile directory so we can set it back efter we have selected a file

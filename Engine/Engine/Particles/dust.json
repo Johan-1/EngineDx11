@@ -1,6 +1,6 @@
 {
     "numEmitters": 1,
-    "numParticles0": 200,
+    "numParticles0": 600,
     "texture0": "dust.dds",
     "startSize0": [
         0.20000000298023225,

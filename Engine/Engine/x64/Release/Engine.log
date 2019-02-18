@@ -1,7 +1,52 @@
-﻿  PlanarReflectionShader.cpp
+﻿  Entity.cpp
+  IComponent.cpp
+  World.cpp
+  FreeMoveComponent.cpp
+  LightDirectionComponent.cpp
+  LightPointComponent.cpp
+  ModelComponent.cpp
+  ParticleSystemComponent.cpp
+  PingPongComponent.cpp
+  QuadComponent.cpp
+  RotationComponent.cpp
+  UVScrollComponent.cpp
+  MasterEditor.cpp
+  PostProcessWindow.cpp
+  SkyDomeWindow.cpp
+  Framework.cpp
+  Input.cpp
+  DXManager.cpp
+  GuiManager.cpp
+  LightManager.cpp
+  Compiling...
+  GBuffer.cpp
+  ScreenQuad.cpp
+  InstancedModel.cpp
+  Mesh.cpp
+  SkyDome.cpp
+  RenderToTexture.cpp
+  Renderer.cpp
+  DeferredShader.cpp
+  DepthShader.cpp
+  ForwardAlphaShader.cpp
+  ImGUIShader.cpp
+  ParticleShader.cpp
+  PlanarReflectionShader.cpp
+  PostProcessingShader.cpp
+  QuadShader.cpp
+  SimpleClipSceneShader.cpp
+  WaterShader.cpp
+  WireframeShader.cpp
+  DXInputLayouts.cpp
+  Systems.cpp
+  Compiling...
+  IslandTestScene.cpp
+  SponzaTestScene.cpp
+  DebugQuadHandler.cpp
+  TexturePool.cpp
   Generating code
-  0 of 3230 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  7 of 3230 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Engine.vcxproj -> C:\Users\nilss\Desktop\EngineDx11\Engine\Engine\Engine.exe
