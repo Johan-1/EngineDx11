@@ -1,4 +1,4 @@
-uniform float4x4 u_viewProj;
+uniform float4x4 u_worldViewProj;
 
 struct VertexInputType
 {
@@ -18,7 +18,7 @@ PixelInputType Main(VertexInputType input)
        
     input.position.w = 1.0f; 
   
-    output.position = mul(input.position, u_viewProj); 
+    output.position = mul(input.position, u_worldViewProj); 
     output.tex = input.tex;	
     
     return output;

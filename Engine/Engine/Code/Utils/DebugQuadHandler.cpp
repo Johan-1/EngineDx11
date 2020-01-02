@@ -24,7 +24,7 @@ DebugQuadHandler::~DebugQuadHandler()
 void DebugQuadHandler::AddDebugQuad(ID3D11ShaderResourceView* texture)
 {
 	Entity* quad = new Entity();
-	quad->AddComponent<QuadComponent>()->Init(XMFLOAT2(_nextStartPosX, _nextStartPosY), XMFLOAT2(_width, _height), L"", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), true);
+	quad->AddComponent<QuadComponent>()->Init(XMFLOAT3(_nextStartPosX, -_nextStartPosY, 0), XMFLOAT3(0,0,0), XMFLOAT3(1,1,1), XMFLOAT2(_width, _height), L"", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), true);
 	quad->GetComponent<QuadComponent>()->texture = texture;
 
 	_count++;

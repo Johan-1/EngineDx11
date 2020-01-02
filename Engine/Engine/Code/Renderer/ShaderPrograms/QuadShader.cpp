@@ -7,6 +7,7 @@
 #include "DXBlendStates.h"
 #include "DXDepthStencilStates.h"
 #include "Systems.h"
+#include "MathHelpers.h"
 
 QuadShader::QuadShader()
 {
@@ -61,10 +62,7 @@ void QuadShader::RenderQuadUI(const std::vector<QuadComponent*>& quads)
 	ConstantQuadUIPixel  pixelData;
 
 	// fill constant buffer vertex with the camera matrices
-	vertexData.viewProj = Systems::cameraManager->currentCameraUI->viewProjMatrixTrans;
-
-	// update vertexconstantbuffers, only needs to be done once for all quads
-	SHADER_HELPERS::UpdateConstantBuffer((void*)&vertexData, sizeof(ConstantQuadUIVertex), _constantBufferVertex);
+	XMFLOAT4X4 cameraMatrix = Systems::cameraManager->currentCameraUI->viewProjMatrix;
 
 	for (int i = 0; i < quads.size(); i++)
 	{
@@ -72,7 +70,10 @@ void QuadShader::RenderQuadUI(const std::vector<QuadComponent*>& quads)
 		pixelData.color       = quads[i]->color;
 		pixelData.ignoreAlpha = quads[i]->ignoreAlpha;
 
-		// update the buffer for each quad
+		XMStoreFloat4x4(&vertexData.worldViewProj, XMLoadFloat4x4(&MATH_HELPERS::MatrixMutiplyTrans(&quads[i]->GetWorldMatrix(), &cameraMatrix)));
+
+		// update the buffers for each quad
+		SHADER_HELPERS::UpdateConstantBuffer((void*)&vertexData, sizeof(ConstantQuadUIVertex), _constantBufferVertex);
 		SHADER_HELPERS::UpdateConstantBuffer((void*)&pixelData, sizeof(ConstantQuadUIPixel), _constantBufferPixel);
 
 		// set the texture

@@ -32,7 +32,7 @@ private:
 	// vertex canstant structure
 	struct ConstantQuadUIVertex
 	{
-		XMFLOAT4X4 viewProj;
+		XMFLOAT4X4 worldViewProj;
 	};
 
 	// pixel constant structure

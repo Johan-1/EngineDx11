@@ -3,6 +3,8 @@
 #include <d3d11.h>
 #include "SystemSettingsWindow.h"
 
+#define UI_ANCHOR_TOP_LEFT XMFLOAT2(-(SystemSettings::SCREEN_WIDTH / 2), (SystemSettings::SCREEN_HEIGHT / 2))
+
 //////////////////////////////////////////////// SYSTEM SETTINGS
 class SystemSettings
 {

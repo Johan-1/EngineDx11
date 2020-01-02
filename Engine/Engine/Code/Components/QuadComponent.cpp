@@ -18,16 +18,15 @@ QuadComponent::~QuadComponent()
 	Systems::renderer->RemoveQuadFromRenderer(this);
 }
 
-void QuadComponent::Init(XMFLOAT2 position, XMFLOAT2 size, wchar_t* texturePath, XMFLOAT4 color, bool ignoreAlpha)
+void QuadComponent::Init(XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale, XMFLOAT2 size, wchar_t* texturePath, XMFLOAT4 color, bool ignoreAlpha)
 {
-	this->size         = size;
 	this->position     = position;
+	this->rotation     = rotation;
+	this->scale        = scale;
 	this->color        = color;
-	_prevSize          = size;
-	_PrevPosition      = position;
 	this->ignoreAlpha  = ignoreAlpha;
 
-	CreateBuffers();
+	CreateBuffers(size);
 	texture = Systems::texturePool->GetTexture(texturePath);
 
 	Systems::renderer->AddQuadToRenderer(this);
@@ -35,10 +34,9 @@ void QuadComponent::Init(XMFLOAT2 position, XMFLOAT2 size, wchar_t* texturePath,
 
 void QuadComponent::Update(const float& delta)
 {
-	UpdateBuffers();
 }
 
-void QuadComponent::CreateBuffers()
+void QuadComponent::CreateBuffers(XMFLOAT2 size)
 {
 	// get device
 	ID3D11Device*& device = Systems::dxManager->device;
@@ -55,10 +53,10 @@ void QuadComponent::CreateBuffers()
 	
 	// Calculate the screen coordinates of the quad, convert so 0.0 now is the top left corner of screen
 	// also convert so the pivot point is always in the middle of the quad
-	left   = (float)((SystemSettings::SCREEN_WIDTH / 2) * -1) + position.x -(size.x /2);
-	right  = left + size.x;	
-	top    = (float)(SystemSettings::SCREEN_HEIGHT / 2) - position.y + (size.y /2);
-	bottom = top - size.y;
+	left   = UI_ANCHOR_TOP_LEFT.x + (-size.x * 0.5);
+	top    = UI_ANCHOR_TOP_LEFT.y + (size.y * 0.5);
+	right  = left + size.x;
+	bottom = top - size.y;	
 	
 	// set data of vertices
 	vertices[0].position = XMFLOAT3(left, top, 0.0f);      // Top left.
@@ -71,10 +69,10 @@ void QuadComponent::CreateBuffers()
 	vertices[3].texture  = XMFLOAT2(1.0f, 0.0f);
 		
 	// set vertexbuffer to be dynamic so we can update the data
-	vertexBufferDesc.Usage               = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.Usage               = D3D11_USAGE_IMMUTABLE;
 	vertexBufferDesc.ByteWidth           = sizeof(VertexType) * 4;
 	vertexBufferDesc.BindFlags           = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags      = D3D11_CPU_ACCESS_WRITE;
+	vertexBufferDesc.CPUAccessFlags      = 0;
 	vertexBufferDesc.MiscFlags           = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
@@ -106,59 +104,6 @@ void QuadComponent::CreateBuffers()
 		printf("failed to create vertexbuffer for quad\n");
 }
 
-void QuadComponent::UpdateBuffers()
-{
-
-	// get if position or scale have changed
-	bool result  = XMVector4Equal(XMLoadFloat2(&_PrevPosition), XMLoadFloat2(&position));
-	bool result2 = XMVector4Equal(XMLoadFloat2(&_prevSize), XMLoadFloat2(&size));	
-
-	// only uppdate buffer if the pos or scale have changed
-	if (!result || !result2)
-	{
-		// save last pos for next frame
-		_PrevPosition = position;
-		_prevSize     = size;
-		
-		// get device context
-		ID3D11DeviceContext*& devCon = Systems::dxManager->devCon;
-
-		// create resource pointer and vertex array
-		D3D11_MAPPED_SUBRESOURCE vertexData;
-		VertexType vertices[4];		
-
-		HRESULT result;
-
-		// calculate all corners of quad
-		float left, right, top, bottom;
-		left = (float)((SystemSettings::SCREEN_WIDTH / 2) * -1) + position.x - (size.x / 2);
-		right = left + size.x;
-		top = (float)(SystemSettings::SCREEN_HEIGHT / 2) - position.y + (size.y / 2);
-		bottom = top - size.y;
-				
-		// set the data of vertices
-		vertices[0].position = XMFLOAT3(left, top, 0.0f);      // Top left.
-		vertices[0].texture  = XMFLOAT2(0.0f, 0.0f);
-		vertices[1].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
-		vertices[1].texture  = XMFLOAT2(1.0f, 1.0f);
-		vertices[2].position = XMFLOAT3(left, bottom, 0.0f);   // Bottom left.
-		vertices[2].texture  = XMFLOAT2(0.0f, 1.0f);		
-		vertices[3].position = XMFLOAT3(right, top, 0.0f);     // Top right.
-		vertices[3].texture  = XMFLOAT2(1.0f, 0.0f);
-
-		// map the vertex buffer 		
-		result = devCon->Map(_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vertexData);
-		if (FAILED(result))
-			printf("Failed to map spriteVertexBuffer");
-
-		// copy the new vertices positions into the buffer 		
-		memcpy(vertexData.pData, (void*)vertices, sizeof(VertexType) * 4);
-
-		//unmap buffer
-		devCon->Unmap(_vertexBuffer, 0);																														 		
-	}
-}
-
 void QuadComponent::UploadBuffers()
 {
 	ID3D11DeviceContext*& devCon = Systems::dxManager->devCon;
@@ -169,5 +114,3 @@ void QuadComponent::UploadBuffers()
 	devCon->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
 	devCon->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
-
-

@@ -17,6 +17,7 @@
 #include "MathHelpers.h"
 #include "Renderer.h"
 #include "DebugQuadHandler.h"
+#include "DXRasterizerStates.h"
 
 WaterShader::WaterShader()
 {
@@ -168,7 +169,11 @@ void WaterShader::Render(std::vector<Mesh*>& waterMeshes)
 
 		mesh->UploadBuffers();
 
+		DXM.rasterizerStates->SetRasterizerState(RASTERIZER_STATE::NOCULL);
+
 		devCon->DrawIndexed(mesh->numIndices, 0, 0);
+
+		DXM.rasterizerStates->SetRasterizerState(RASTERIZER_STATE::BACKCULL);
 
 		// unbind so we can use resources as input in next stages
 		ID3D11ShaderResourceView* nullSRV[10] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
