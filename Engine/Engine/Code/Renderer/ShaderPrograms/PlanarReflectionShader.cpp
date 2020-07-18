@@ -17,6 +17,8 @@
 #include "MathHelpers.h"
 #include "Renderer.h"
 #include "DebugQuadHandler.h"
+#include "PostProcessingShader.h"
+#include "ScreenQuad.h"
 
 PlanarReflectionShader::PlanarReflectionShader()
 {
@@ -29,6 +31,9 @@ PlanarReflectionShader::PlanarReflectionShader()
 	SHADER_HELPERS::CreateConstantBuffer(_CBReflect);
 
 	_simpleClipShaderReflection = new SimpleClipSceneShader(1920, 1080);
+
+	_blurH = new RenderToTexture(SystemSettings::SCREEN_WIDTH / PLANAR_BLUR_SCALE, SystemSettings::SCREEN_HEIGHT / PLANAR_BLUR_SCALE, false, SystemSettings::USE_HDR, false);
+	_blurV = new RenderToTexture(SystemSettings::SCREEN_WIDTH / PLANAR_BLUR_SCALE, SystemSettings::SCREEN_HEIGHT / PLANAR_BLUR_SCALE, false, SystemSettings::USE_HDR, false);
 }
 
 PlanarReflectionShader::~PlanarReflectionShader()
@@ -41,6 +46,9 @@ PlanarReflectionShader::~PlanarReflectionShader()
 
 	_CBReflect->Release();
 	_CBVertex->Release();
+
+	delete _blurH;
+	delete _blurV;
 
 	delete _simpleClipShaderReflection;
 }
@@ -105,6 +113,13 @@ void PlanarReflectionShader::Render(std::vector<Mesh*>& reflectionMeshes)
 		// render the reflectionmap
 		_simpleClipShaderReflection->RenderScene(renderer.GetMeshes(SHADER_TYPE::S_CAST_REFLECTION_OPAQUE), renderer.GetMeshes(SHADER_TYPE::S_CAST_REFLECTION_ALPHA), renderer.GetInstancedModels(INSTANCED_SHADER_TYPE::S_INSTANCED_CAST_REFLECTION), clipPlane, true);
 
+		ID3D11ShaderResourceView* reflectionSRV = _simpleClipShaderReflection->GetRenderSRV();
+		if (USE_BLURRED_REFELECTIONS)
+		{
+			renderer.fullScreenQuad->UploadBuffers();
+			reflectionSRV = renderer.postProcessingShader->RenderBlurMap(_simpleClipShaderReflection->GetRenderSRV(), PLANAR_BLUR_SCALE, _blurH, _blurV);
+		}
+
 		// change back to original camera position/rotation
 		camTrans->rotation = cameraRot;
 		camTrans->position = cameraPos;
@@ -144,7 +159,7 @@ void PlanarReflectionShader::Render(std::vector<Mesh*>& reflectionMeshes)
 		SHADER_HELPERS::UpdateConstantBuffer((void*)&cbReflect, sizeof(CBReflect), _CBReflect);
 
 		// fill texture array with all textures including the shadow map and reflection map
-		ID3D11ShaderResourceView* t[6] = { mesh->baseTextures[0], mesh->baseTextures[1], mesh->baseTextures[2], mesh->baseTextures[3], cameraLight->renderTexture, _simpleClipShaderReflection->GetRenderSRV() };
+		ID3D11ShaderResourceView* t[6] = { mesh->baseTextures[0], mesh->baseTextures[1], mesh->baseTextures[2], mesh->baseTextures[3], cameraLight->renderTexture, reflectionSRV };
 
 		// set SRV's
 		devCon->PSSetShaderResources(0, 6, t);

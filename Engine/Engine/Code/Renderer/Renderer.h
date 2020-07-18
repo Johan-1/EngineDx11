@@ -116,6 +116,7 @@ public:
 
 	float clearColor[4];
 	void SetClearColor(float r, float g, float b, float a) { clearColor[0] = r; clearColor[1] = g; clearColor[2] = b; clearColor[3] = a;}
+	ScreenQuad* fullScreenQuad;
 	
 private:
 
@@ -144,6 +145,5 @@ private:
 	// and the fullscreen quad where we will 
 	// project the deferred lightningpass
 	GBuffer*    _gBuffer;
-	ScreenQuad* _fullScreenQuad;
 };
 

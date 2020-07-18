@@ -1,2 +1,5 @@
-﻿  SponzaTestScene.cpp
+﻿  Renderer.cpp
+  PlanarReflectionShader.cpp
+  SponzaTestScene.cpp
+  Generating Code...
   Engine.vcxproj -> C:\Users\nilss\Desktop\EngineDx11\Engine\Engine\Engine.exe

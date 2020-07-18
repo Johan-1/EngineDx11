@@ -39,7 +39,7 @@ Renderer::~Renderer()
 {
 	delete _depthMap;
 	delete _gBuffer;
-	delete _fullScreenQuad;
+	delete fullScreenQuad;
 	delete skyDome;
 	delete depthShader;
 	delete deferredShader;
@@ -88,7 +88,7 @@ void Renderer::Initialize()
 
 	// create fullscreenquad for deferred rendering 
 	// and to project the final scene image after post processing
-	_fullScreenQuad = new ScreenQuad();
+	fullScreenQuad = new ScreenQuad();
 
 	// create the main rendertarget we will use
 	// this will hold our final scene up till we apply post processing
@@ -172,7 +172,7 @@ void Renderer::Render()
 	inputLayouts->SetInputLayout(INPUT_LAYOUT_TYPE::LAYOUT_2D);
 
 	// Render post processing 
-	postProcessingShader->Render(_fullScreenQuad, mainRendertarget->renderTargetSRV, mainRendertarget->depthStencilSRV);
+	postProcessingShader->Render(fullScreenQuad, mainRendertarget->renderTargetSRV, mainRendertarget->depthStencilSRV);
 
 	// render UI
 	quadShader->RenderQuadUI(_quads);
@@ -203,7 +203,7 @@ void Renderer::RenderDeferred()
 	mainRendertarget->SetRendertarget(false, false);
 
 	// upload the vertices of the screensized quad
-	_fullScreenQuad->UploadBuffers();
+	fullScreenQuad->UploadBuffers();
 
 	// render lights as 2d post processing
 	deferredShader->RenderLightning(_gBuffer);

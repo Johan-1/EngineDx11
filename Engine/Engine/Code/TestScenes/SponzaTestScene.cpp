@@ -110,7 +110,7 @@ SponzaTestScene::SponzaTestScene()
 	Entity* floor = new Entity();
 	floor->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 0.02f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(600, 1, 600));
 	floor->AddComponent<ModelComponent>()->InitModel("Models/plane.obj", ALPHA_REFLECTION | REFRACT, L"Textures/sponza_floor_a_diff.dds", L"Textures/sponza_floor_a_ddn.dds", L"Textures/FlatHighSpecular.dds", L"", false, 800.0f);
-	floor->GetComponent<ModelComponent>()->meshes[0]->planarReflectionFraction = 0.25f;
+	floor->GetComponent<ModelComponent>()->meshes[0]->planarReflectionFraction = 0.2f;
 
 	// create water
 	Entity* water = new Entity();
@@ -132,10 +132,13 @@ SponzaTestScene::SponzaTestScene()
 	waterSettings->normalScrollStrength1 = 0.1f;
 	waterSettings->normalScrollStrength2 = 0.2f;
 	waterSettings->colorTint             = XMFLOAT4(0.3f, 0.8f, 0.95f, 1);
-	waterSettings->applyFoam             = false;
-	waterSettings->foamToDepth           = 1.0f;
+	waterSettings->applyFoam             = true;
+	waterSettings->foamToDepth           = 1.2f;
 	waterSettings->reflectivePower       = 1.0f;
-	waterSettings->fadeToDepth = 0.5f;
+	waterSettings->fadeToDepth           = 0.5f;
+	waterSettings->foamDistortDamping    = 0.020f;
+	waterSettings->foamDistortStrength   = -2.5f;
+	waterSettings->foamScrollStrength    = 0.8f;
 
 	Entity* fountain = new Entity();
 	fountain->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30.0f, 0.0f, 50.0f), XMFLOAT3(0, 0, 0), XMFLOAT3(4, 3, 4));

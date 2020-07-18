@@ -3,6 +3,9 @@
 #include <DirectXMath.h>
 #include <vector>
 
+#define PLANAR_BLUR_SCALE 2.0f
+#define USE_BLURRED_REFELECTIONS true
+
 using namespace DirectX;
 
 class Mesh;
@@ -27,6 +30,9 @@ public:
 
 private:
 	
+	RenderToTexture* _blurH;
+	RenderToTexture* _blurV;
+
 	// compiled shaders
 	ID3D11VertexShader*    _planarVertexShader;
 	ID3D11PixelShader*     _planarPixelShader;

@@ -34,6 +34,7 @@ public:
 	ID3D10Blob* pixelPostProcessingSDRShaderByteCode;
 	ID3D10Blob* computeBrightnessShaderByteCode;
 
+	ID3D11ShaderResourceView* RenderBlurMap(ID3D11ShaderResourceView* imageToBlur, float scaleDown1, RenderToTexture* h1, RenderToTexture* v1);
 private:
 
 	struct ComputeResources
@@ -43,7 +44,6 @@ private:
 		ID3D11UnorderedAccessView* UAV;
 	};
 
-	ID3D11ShaderResourceView* RenderBlurMap(ID3D11ShaderResourceView* imageToBlur, float scaleDown1, RenderToTexture* h1, RenderToTexture* v1);
 	void ComputeBrightnessMap(ID3D11ShaderResourceView* originalImage);
 	void RenderFinalHDR(ID3D11ShaderResourceView* SceneImage, ID3D11ShaderResourceView* sceneDepth);
 	void RenderFinalSDR(ID3D11ShaderResourceView* SceneImageSDR);

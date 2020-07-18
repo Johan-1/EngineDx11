@@ -2,6 +2,6 @@
     "SCREEN_WIDTH": 1920.0,
     "SCREEN_HEIGHT": 1080.0,
     "V_SYNC": false,
-    "FULLSCREEN": true,
+    "FULLSCREEN": false,
     "USE_HDR": true
 }

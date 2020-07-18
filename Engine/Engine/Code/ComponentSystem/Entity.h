@@ -42,7 +42,7 @@ public:
 
 		// return the component that match the enum and cast it
 		// to the type we requested
-		for (int i =0; i< _components.size(); i++)		
+		for (int i = 0; i < _components.size(); i++)		
 			if (_components[i]->Type() == type)			
 				return (T*)_components[i];
 		
