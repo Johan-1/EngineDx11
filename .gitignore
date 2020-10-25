@@ -5,6 +5,9 @@
 Temp
 Build
 
+#local tools
+enginecommandline.lnk
+
 # Compiled Object files
 *.slo
 *.lo

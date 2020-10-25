@@ -77,7 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)Code;$(SolutionDir)Code/System;$(SolutionDir)Code/Utils;$(SolutionDir)Code/ComponentSystem;$(SolutionDir)Code/Components;$(SolutionDir)Code/Managers;$(SolutionDir)Code/ThirdParty/imGUI;$(SolutionDir)Code/Input;$(SolutionDir)Code/ThirdParty/rapidjson;$(SolutionDir)Code/Renderer;$(SolutionDir)Code/DataTypes;$(SolutionDir)Code/System/DXModules;$(SolutionDir)Code/Renderer/ShaderPrograms;$(SolutionDir)Code/Renderer/Deferred;$(SolutionDir)Code/Renderer/Objects;$(SolutionDir)Code/TestScenes;$(SolutionDir)Code/Editor;$(IncludePath);$(SolutionDir)Code/ThirdParty;$(SolutionDir)Code/ThirdParty/assimp</IncludePath>
     <OutDir>$(SolutionDir)Build\Debug\</OutDir>
-    <LibraryPath>$(SolutionDir)Data/lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)\Temp\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,7 +88,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Build\Release\</OutDir>
     <IncludePath>$(SolutionDir)Code;$(SolutionDir)Code/System;$(SolutionDir)Code/Utils;$(SolutionDir)Code/ComponentSystem;$(SolutionDir)Code/Components;$(SolutionDir)Code/Managers;$(SolutionDir)Code/ThirdParty/imGUI;$(SolutionDir)Code/Input;$(SolutionDir)Code/ThirdParty/rapidjson;$(SolutionDir)Code/Renderer;$(SolutionDir)Code/DataTypes;$(SolutionDir)Code/System/DXModules;$(SolutionDir)Code/Renderer/ShaderPrograms;$(SolutionDir)Code/Renderer/Deferred;$(SolutionDir)Code/Renderer/Objects;$(SolutionDir)Code/TestScenes;$(SolutionDir)Code/Editor;$(IncludePath);$(SolutionDir)Code/ThirdParty;$(SolutionDir)Code/ThirdParty/assimp</IncludePath>
-    <LibraryPath>$(SolutionDir)Data/lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)\Temp\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
