@@ -34,37 +34,46 @@ public:
 				aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 				// diffuse map
-				if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+				if (material->GetTextureCount(aiTextureType_BASE_COLOR) > 0)
 				{
 					aiString stringDiffuse;
-					material->GetTexture(aiTextureType_DIFFUSE, 0, &stringDiffuse);
+					material->GetTexture(aiTextureType_BASE_COLOR, 0, &stringDiffuse);
 
 					diffuse = GetRelativePathAndSetExtension(stringDiffuse.C_Str(), ".dds");
 				}
 
-				// normal map (flagged as height for some reason)
-				if (material->GetTextureCount(aiTextureType_HEIGHT) > 0)
+				// normal map
+				if (material->GetTextureCount(aiTextureType_NORMAL_CAMERA) > 0)
 				{
 					aiString stringNormal;
-					material->GetTexture(aiTextureType_HEIGHT, 0, &stringNormal);
+					material->GetTexture(aiTextureType_NORMAL_CAMERA, 0, &stringNormal);
 
 					normal = GetRelativePathAndSetExtension(stringNormal.C_Str(), ".dds");
 				}
 
-				// specular map
-				if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
+				// metalic map
+				if (material->GetTextureCount(aiTextureType_METALNESS) > 0)
 				{
 					aiString stringSpecular;
-					material->GetTexture(aiTextureType_SPECULAR, 0, &stringSpecular);
+					material->GetTexture(aiTextureType_METALNESS, 0, &stringSpecular);
 
 					metalic = GetRelativePathAndSetExtension(stringSpecular.C_Str(), ".dds");
 				}
 
+				// rougness map
+				if (material->GetTextureCount(aiTextureType_METALNESS) > 0)
+				{
+					aiString stringRougness;
+					material->GetTexture(aiTextureType_METALNESS, 0, &stringRougness);
+
+					rougness = GetRelativePathAndSetExtension(stringRougness.C_Str(), ".dds");
+				}
+
 				// emissive map
-				if (material->GetTextureCount(aiTextureType_EMISSIVE) > 0)
+				if (material->GetTextureCount(aiTextureType_EMISSION_COLOR) > 0)
 				{
 					aiString emissiveSpecular;
-					material->GetTexture(aiTextureType_EMISSIVE, 0, &emissiveSpecular);
+					material->GetTexture(aiTextureType_EMISSION_COLOR, 0, &emissiveSpecular);
 
 					emissive = GetRelativePathAndSetExtension(emissiveSpecular.C_Str(), ".dds");
 				}

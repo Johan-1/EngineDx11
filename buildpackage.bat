@@ -13,7 +13,7 @@ Xcopy /E /I /Q Data Build\%1\Data\
 @echo.
 
 @echo [92mCopy .dll files to build folder[0m
-Xcopy assimp-vc140-mt.dll Build\%1\
+Xcopy assimp-vc141-mtd.dll Build\%1\
 @echo [92mDone copying .dll files[0m
 
 exit /B 1
