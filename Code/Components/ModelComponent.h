@@ -21,7 +21,7 @@ public:
 	~ModelComponent();
 
 	// creates a model from file
-	void InitModel(char* model, unsigned int flags, wchar_t* diffuseMap = L"", wchar_t* normalMap = L"", wchar_t* specularMap = L"", wchar_t* emissiveMap = L"", bool useMaterial = true, float tiling = 1.0f, float heightMapScale = 0.04f);
+	void InitModel(char* model, unsigned int flags, wchar_t* diffuseMap = L"", wchar_t* normalMap = L"", wchar_t* metalicMap = L"", wchar_t* rougnessMap = L"", wchar_t* emissiveMap = L"", bool useMaterial = true, float tiling = 1.0f, float heightMapScale = 0.04f);
 	void Update(const float& delta);
 
 	// overides and calls base
@@ -42,7 +42,7 @@ public:
 
 private:
 
-	void ProcessNode(aiNode* node, const aiScene* scene, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* specularMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale);
+	void ProcessNode(aiNode* node, const aiScene* scene, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* metalicMap, wchar_t* rougnessMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale);
 
 	bool         _useMaterial;
 	unsigned int _FLAGS;

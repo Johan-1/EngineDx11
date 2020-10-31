@@ -15,7 +15,7 @@ ModelComponent::~ModelComponent()
 		delete meshes[i];
 }
 
-void ModelComponent::InitModel(char* model, unsigned int flags, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* specularMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale)
+void ModelComponent::InitModel(char* model, unsigned int flags, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* metalicMap, wchar_t* rougnessMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale)
 {
 	_FLAGS = flags;
 	_useMaterial = useMaterial;
@@ -30,7 +30,7 @@ void ModelComponent::InitModel(char* model, unsigned int flags, wchar_t* diffuse
 	assert(scene != nullptr);
 
 	// send the root node and recurivly create all meshes
-	ProcessNode(scene->mRootNode, scene, diffuseMap, normalMap, specularMap, emissiveMap, useMaterial, tiling, heightMapScale);
+	ProcessNode(scene->mRootNode, scene, diffuseMap, normalMap, metalicMap, rougnessMap, emissiveMap, useMaterial, tiling, heightMapScale);
 
 	// get how many meshes that was loaded
 	numMeshes = meshes.size();
@@ -75,18 +75,18 @@ void ModelComponent::SetRenderFlags(unsigned int flags)
 	}
 }
 
-void ModelComponent::ProcessNode(aiNode* node, const aiScene* scene, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* specularMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale)
+void ModelComponent::ProcessNode(aiNode* node, const aiScene* scene, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* metalicMap, wchar_t* rougnessMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale)
 {
 	// get and create all meshes in this node
 	for (UINT i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(ModelLoader::CreateMesh(mesh, scene, _FLAGS, diffuseMap, normalMap, specularMap, emissiveMap, _useMaterial, tiling, parent, heightMapScale));
+		meshes.push_back(ModelLoader::CreateMesh(mesh, scene, _FLAGS, diffuseMap, normalMap, metalicMap, rougnessMap, emissiveMap, _useMaterial, tiling, parent, heightMapScale));
 	}
 
 	// recursivly loop over and process all child nodes
 	for (UINT i = 0; i < node->mNumChildren; i++)	
-		ProcessNode(node->mChildren[i], scene, diffuseMap, normalMap, specularMap, emissiveMap, useMaterial, tiling, heightMapScale);	
+		ProcessNode(node->mChildren[i], scene, diffuseMap, normalMap, metalicMap, rougnessMap, emissiveMap, useMaterial, tiling, heightMapScale);
 }
 
 

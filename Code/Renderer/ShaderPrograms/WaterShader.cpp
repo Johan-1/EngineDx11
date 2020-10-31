@@ -93,7 +93,7 @@ void WaterShader::Render(std::vector<Mesh*>& waterMeshes)
 		XMFLOAT4 clipPlaneRefract(0, -1, 0, mesh->GetPosition().y);
 
 		// render the refractionmap
-		_simpleClipShaderRefraction->RenderScene(renderer.GetMeshes(SHADER_TYPE::S_REFRACT_OPAQUE), renderer.GetMeshes(SHADER_TYPE::S_REFRACT_ALPHA), renderer.GetInstancedModels(INSTANCED_SHADER_TYPE::S_INSTANCED_REFRACT), clipPlaneRefract, true, false);
+		_simpleClipShaderRefraction->RenderScene(renderer.GetMeshes(SHADER_TYPE::S_REFRACT_OPAQUE),  renderer.GetInstancedModels(INSTANCED_SHADER_TYPE::S_INSTANCED_REFRACT), clipPlaneRefract, true, false);
 
 		// get the clip plane of the water mesh so we dont render anything below this plane
 		XMFLOAT4 clipPlaneReflect(0, 1, 0, -mesh->GetPosition().y);
@@ -112,7 +112,7 @@ void WaterShader::Render(std::vector<Mesh*>& waterMeshes)
 		XMFLOAT4X4 reflectMat = camera->viewProjMatrix;
 
 		// render the reflectionmap
-		_simpleClipShaderReflection->RenderScene(renderer.GetMeshes(SHADER_TYPE::S_CAST_REFLECTION_OPAQUE), renderer.GetMeshes(SHADER_TYPE::S_CAST_REFLECTION_ALPHA), renderer.GetInstancedModels(INSTANCED_SHADER_TYPE::S_INSTANCED_CAST_REFLECTION), clipPlaneReflect, true);
+		_simpleClipShaderReflection->RenderScene(renderer.GetMeshes(SHADER_TYPE::S_CAST_REFLECTION), renderer.GetInstancedModels(INSTANCED_SHADER_TYPE::S_INSTANCED_CAST_REFLECTION), clipPlaneReflect, true);
 
 		// change back to original camera position/rotation
 		camTrans->rotation = cameraRot;

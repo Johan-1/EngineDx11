@@ -22,7 +22,7 @@ struct ModelInstance
 class InstancedModel
 {
 public:
-	InstancedModel(char* model, unsigned int flags, wchar_t* diffuseMap = L"", wchar_t* normalMap = L"", wchar_t* specularMap = L"", wchar_t* emissiveMap = L"", bool useMaterial = true, float tiling = 1.0f, float heightMapScale = 0.04f);
+	InstancedModel(char* model, unsigned int flags, wchar_t* diffuseMap = L"", wchar_t* normalMap = L"", wchar_t* metalicMap = L"", wchar_t* rougnessMap = L"", wchar_t* emissiveMap = L"", bool useMaterial = true, float tiling = 1.0f, float heightMapScale = 0.04f);
 	~InstancedModel();
 
 	void AddInstance(XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale);
@@ -49,7 +49,7 @@ private:
 
 	void BuildBuffer(std::vector<ModelInstance>& instances);
 
-	void ProcessNode(aiNode* node, const aiScene* scene, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* specularMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale);
+	void ProcessNode(aiNode* node, const aiScene* scene, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* metalicMap, wchar_t* rougnessMap, wchar_t* emissiveMap, bool useMaterial, float tiling, float heightMapScale);
 	void AddToRenderQueues(bool add);
 
 	ID3D11Buffer* _instanceBuffer;

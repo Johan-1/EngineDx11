@@ -68,7 +68,7 @@ SkyDome::~SkyDome()
 
 void SkyDome::CreateMeshes() 
 {
-	_domeMesh         = ModelLoader::CreateSphere(0, L"", L"", L"", L"", 1.0f, nullptr, 0);
+	_domeMesh         = ModelLoader::CreateSphere(0, L"", L"", L"", L"", L"", 1.0f, nullptr, 0);
 	sunMoon.sun.mesh  = ModelLoader::CreateWorldSprite(0, L"Data/Textures/sun.dds", nullptr);
 	sunMoon.moon.mesh = ModelLoader::CreateWorldSprite(0, L"Data/Textures/moon2.dds", nullptr);
 }

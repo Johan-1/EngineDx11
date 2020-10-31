@@ -33,14 +33,11 @@ enum SHADER_TYPE
 {	
 	S_DEFERRED,
 	S_DEPTH,
-	S_FORWARD_ALPHA,
 	S_WIREFRAME,
-	S_CAST_REFLECTION_OPAQUE,
-	S_CAST_REFLECTION_ALPHA,
+	S_CAST_REFLECTION,
 	S_REFRACT_OPAQUE,
-	S_REFRACT_ALPHA,
-	S_ALPHA_REFLECTION,
-	S_ALPHA_WATER,
+	S_PLANAR_REFLECTION,
+	S_WATER,
 	S_NUM_RENDER_TYPES,
 };
 
@@ -106,7 +103,6 @@ public:
 	QuadShader*             quadShader;
 	ParticleShader*         particleShader;
 	ImGUIShader*            imGUIShader;
-	ForwardAlphaShader*     forwardAlphaShader;
 	WireframeShader*        wireframeShader;
 	PlanarReflectionShader* planarReflectionShader;
 	PostProcessingShader*   postProcessingShader;
@@ -144,6 +140,6 @@ private:
 	// the Gbuffer for deferred rendering
 	// and the fullscreen quad where we will 
 	// project the deferred lightningpass
-	GBuffer*    _gBuffer;
+	GBuffer* _gBuffer;
 };
 

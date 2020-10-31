@@ -204,6 +204,7 @@
     <ClCompile Include="Code\System\HardwareProperties.cpp" />
     <ClCompile Include="Code\System\Systems.cpp" />
     <ClCompile Include="Code\TestScenes\IslandTestScene.cpp" />
+    <ClCompile Include="Code\TestScenes\PBRTestScene.cpp" />
     <ClCompile Include="Code\TestScenes\SponzaTestScene.cpp" />
     <ClCompile Include="Code\ThirdParty\DDSTextureLoader\DDSTextureLoader.cpp" />
     <ClCompile Include="Code\ThirdParty\ImGUI\imgui.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="Code\System\HardwareProperties.h" />
     <ClInclude Include="Code\System\Systems.h" />
     <ClInclude Include="Code\TestScenes\IslandTestScene.h" />
+    <ClInclude Include="Code\TestScenes\PBRTestScene.h" />
     <ClInclude Include="Code\TestScenes\SponzaTestScene.h" />
     <ClInclude Include="Code\Utils\DebugQuadHandler.h" />
     <ClInclude Include="Code\Utils\GUI.h" />

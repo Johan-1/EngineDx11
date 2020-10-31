@@ -96,21 +96,23 @@ void DeferredShader::RenderGeometry(std::vector<Mesh*>& meshes)
 		// set pixel constant data
 		pixelData.hasHeightmap = mesh->hasHeightmap;
 		pixelData.heightScale  = mesh->heightMapScale;
+		pixelData.metalic      = mesh->metalic;
+		pixelData.rougness     = mesh->rougness;
 
 		// update the constant buffer with the mesh data
 		SHADER_HELPERS::UpdateConstantBuffer((void*)&vertexData, sizeof(CBGeometryVertex), _CBGeometryVertex);
 		SHADER_HELPERS::UpdateConstantBuffer((void*)&pixelData,  sizeof(CBGeometryPixel),  _CBGeometryPixel);
 
 		// set textures
-		devCon->PSSetShaderResources(0, 4, mesh->baseTextures);
+		devCon->PSSetShaderResources(0, 5, mesh->baseTextures);
 
 		// draw
 		devCon->DrawIndexed(mesh->numIndices, 0, 0);
 	}
 
 	// unbind so we can use resources as input in next stages
-	ID3D11ShaderResourceView* nullSRV[4] = { NULL, NULL, NULL, NULL };
-	devCon->PSSetShaderResources(0, 4, nullSRV);
+	ID3D11ShaderResourceView* nullSRV[5] = { NULL, NULL, NULL, NULL, NULL };
+	devCon->PSSetShaderResources(0, 5, nullSRV);
 }
 
 void DeferredShader::renderGeometryInstanced(std::vector<InstancedModel*> models)
@@ -162,6 +164,9 @@ void DeferredShader::renderGeometryInstanced(std::vector<InstancedModel*> models
 			// set pixel constant data
 			pixelData.hasHeightmap = mesh->hasHeightmap;
 			pixelData.heightScale  = mesh->heightMapScale;
+			pixelData.metalic      = mesh->metalic;
+			pixelData.rougness     = mesh->rougness;
+
 			SHADER_HELPERS::UpdateConstantBuffer((void*)&pixelData, sizeof(CBGeometryPixel), _CBGeometryPixel);
 
 			// Set the vertex buffer in slot 0
@@ -171,7 +176,7 @@ void DeferredShader::renderGeometryInstanced(std::vector<InstancedModel*> models
 			devCon->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 			// set textures
-			devCon->PSSetShaderResources(0, 4, mesh->baseTextures);
+			devCon->PSSetShaderResources(0, 5, mesh->baseTextures);
 
 			// draw all instances of this mesh
 			devCon->DrawIndexedInstanced(mesh->numIndices, model->numInstances, 0, 0, 0);
@@ -179,8 +184,8 @@ void DeferredShader::renderGeometryInstanced(std::vector<InstancedModel*> models
 	}
 
 	// unbind so we can use resources as input in next stages
-	ID3D11ShaderResourceView* nullSRV[4] = { NULL, NULL, NULL, NULL };
-	devCon->PSSetShaderResources(0, 4, nullSRV);
+	ID3D11ShaderResourceView* nullSRV[5] = { NULL, NULL, NULL, NULL, NULL };
+	devCon->PSSetShaderResources(0, 5, nullSRV);
 }
 
 void DeferredShader::RenderLightning(GBuffer*& gBuffer)

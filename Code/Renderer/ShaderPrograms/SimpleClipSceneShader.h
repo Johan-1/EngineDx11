@@ -18,7 +18,7 @@ public:
 	SimpleClipSceneShader(const unsigned int resX, const unsigned int resY);
 	~SimpleClipSceneShader();
 
-	void RenderScene(std::vector<Mesh*>& opaqueMeshes, std::vector<Mesh*>& alphaMeshes, std::vector<InstancedModel*>& instancedModels, XMFLOAT4 clipPlane, bool includeSkyBox = true, bool includeParticles = true);
+	void RenderScene(std::vector<Mesh*>& opaqueMeshes, std::vector<InstancedModel*>& instancedModels, XMFLOAT4 clipPlane, bool includeSkyBox = true, bool includeParticles = true);
 
 	// gets the reflection map srv
 	ID3D11ShaderResourceView* GetRenderSRV()     { return _renderTexture->renderTargetSRV; }

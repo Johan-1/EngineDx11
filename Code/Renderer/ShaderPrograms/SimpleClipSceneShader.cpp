@@ -44,7 +44,7 @@ SimpleClipSceneShader::~SimpleClipSceneShader()
 	_CBVertex->Release();
 }
 
-void SimpleClipSceneShader::RenderScene(std::vector<Mesh*>& opaqueMeshes, std::vector<Mesh*>& alphaMeshes, std::vector<InstancedModel*>& instancedModels, XMFLOAT4 clipPlane, bool includeSkyBox, bool includeParticles)
+void SimpleClipSceneShader::RenderScene(std::vector<Mesh*>& opaqueMeshes, std::vector<InstancedModel*>& instancedModels, XMFLOAT4 clipPlane, bool includeSkyBox, bool includeParticles)
 {
 	// get systems
 	DXManager&     DXM = *Systems::dxManager;
@@ -166,50 +166,6 @@ void SimpleClipSceneShader::RenderScene(std::vector<Mesh*>& opaqueMeshes, std::v
 			devCon->DrawIndexedInstanced(mesh->numIndices, model->numInstances, 0, 0, 0);
 		}
 	}
-
-	// -------------------------------------------------------------------------------------------- ALPHA
-
-	// set back the vertex shader and constant buffer that all but instanced meshes use
-	devCon->VSSetShader(_vertexShader, NULL, 0);
-	devCon->VSSetConstantBuffers(0, 1, &_CBVertex);
-	Systems::renderer->inputLayouts->SetInputLayout(INPUT_LAYOUT_TYPE::LAYOUT_3D);
-
-	// set shader and blend state if we have any alpha meshes
-	// that is being reflected, also sort these from the pos
-	// of the camera reflection matrix
-	size = alphaMeshes.size();
-	if (size > 0)
-	{
-		DXM.blendStates->SetBlendState(BLEND_STATE::BLEND_ALPHA);
-		SHADER_HELPERS::MeshSort(alphaMeshes, camera->GetComponent<TransformComponent>()->position, true);
-	}
-
-	// loop over all alpha meshes that is set to cast reflections
-	for (int y = 0; y < size; y++)
-	{
-		Mesh*& mesh = alphaMeshes[y];
-
-		// get world matrix of mesh and update the buffer
-		XMStoreFloat4x4(&constantVertex.world,         XMLoadFloat4x4(&mesh->GetWorldMatrixTrans()));
-		XMStoreFloat4x4(&constantVertex.worldViewProj, XMLoadFloat4x4(&MATH_HELPERS::MatrixMutiplyTrans(&mesh->GetWorldMatrix(), &camera->viewProjMatrix)));
-		SHADER_HELPERS::UpdateConstantBuffer((void*)&constantVertex, sizeof(CBVertex), _CBVertex);
-
-		// set pixel constant data
-		constantPixel.hasHeightmap = mesh->hasHeightmap;
-		constantPixel.heightScale  = mesh->heightMapScale;
-		SHADER_HELPERS::UpdateConstantBuffer((void*)&constantPixel, sizeof(CBPixel), _CBPixel);
-
-		// specular map is not sent to this shader tho this is not calculated
-		ID3D11ShaderResourceView* texArray[3] = { mesh->baseTextures[0], mesh->baseTextures[1], mesh->baseTextures[3] };
-		devCon->PSSetShaderResources(0, 3, texArray);
-
-		// upload and draw the mesh
-		mesh->UploadBuffers();
-
-		devCon->DrawIndexed(mesh->numIndices, 0, 0);
-	}
-
-	devCon->PSSetShaderResources(0, 3, nullSRV);
 
 	//-------------------------------------------------------------------------------------------- PARTICLES
 	// render all particles to the texture 

@@ -9,10 +9,10 @@
 #define CAST_SHADOW_DIR           1 << 1
 #define CAST_REFLECTION           1 << 2
 #define WIREFRAME_COLOR           1 << 3
-#define ALPHA_REFLECTION          1 << 4
-#define ALPHA_WATER               1 << 5
+#define PLANAR_REFLECTION         1 << 4
+#define WATER                     1 << 5
 #define REFRACT                   1 << 6
-#define INSTANCED_OPAQUE          1 << 7
+#define INSTANCED                 1 << 7
 #define INSTANCED_CAST_SHADOW_DIR 1 << 8
 #define INSTANCED_CAST_REFLECTION 1 << 9
 #define INSTANCED_REFRACT         1 << 10
@@ -22,7 +22,7 @@ using namespace DirectX;
 class Mesh
 {
 public:	
-	Mesh(Entity* parent, unsigned int FLAGS, const wchar_t* diffuseMap, const wchar_t* normalMap, const wchar_t* specularMap, const wchar_t* emissiveMap, bool hasAlpha, bool hasHeightmap, float heightMapScale);
+	Mesh(Entity* parent, unsigned int FLAGS, const wchar_t* diffuseMap, const wchar_t* normalMap, const wchar_t* metalicMap, const wchar_t* rougnessMap, const wchar_t* emissiveMap, bool hasAlpha, bool hasHeightmap, float heightMapScale);
 	~Mesh();
 
 	// vertex data structure
@@ -60,7 +60,7 @@ public:
 	unsigned int numIndices;
 
 	// textures
-	ID3D11ShaderResourceView* baseTextures[4];
+	ID3D11ShaderResourceView* baseTextures[5];
 	ID3D11ShaderResourceView* DUDVMap;
 	ID3D11ShaderResourceView* foamMap;
 	ID3D11ShaderResourceView* noiseMap;
@@ -75,6 +75,9 @@ public:
 	XMFLOAT2     uvOffset;
 
 	WaterSettings waterSettings;
+
+	float metalic;
+	float rougness;
 
 private:	
 

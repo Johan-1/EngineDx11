@@ -1,6 +1,6 @@
 #include "CommonPixel.shader"
 
-Texture2D    Texture[5];    // shadowmap, position, normal, diffuse, specular	
+Texture2D    Texture[5];    // shadowmap, position, normal, diffuse, pbr	
 SamplerState SampleType[6]; // wrapTrilinear, clampTrilinear, wrapBilinear, clampBililinear, wrapAnisotropic, clampAnisotropic 	
  
 struct PointLight
@@ -92,7 +92,7 @@ float4 GetPointColor(float4 position, float4 diffuse, float4 normal, float4 spec
 				float3 vertexToCamera   = normalize(cameraPosition.xyz - position.xyz);
 				float3 reflection       = normalize(2 * lightIntensity * normal - lightDir);		
 				float specularIntensity = pow(saturate(dot(reflection, vertexToCamera)), specularMap.a * 255.0);
-				specular.rgb            = (pointLights[i].color * specularIntensity) * specularMap.rgb;
+				specular.rgb            = (pointLights[i].color * specularIntensity) * specularMap.x;
 			} 
 						
 			color += specular;	
@@ -114,13 +114,13 @@ float4 Main(PixelInputType input) : SV_TARGET
 		
 	float4 position = Texture[1].Load(int3(input.position.xy,0));
 	float4 normal   = Texture[2].Load(int3(input.position.xy,0));
-	float4 specular = Texture[4].Load(int3(input.position.xy,0));		
+	float4 pbr      = Texture[4].Load(int3(input.position.xy,0));		
 		
 	float4 finalColor = float4(0,0,0,1);
 
 	float4 ambientColor     = GetAmbientColor(diffuse);
-	float4 directionalColor = GetDirectionalColor(position, diffuse, normal, specular);
-	float4 pointColor       = GetPointColor(position, diffuse, normal, specular);
+	float4 directionalColor = GetDirectionalColor(position, diffuse, normal, pbr);
+	float4 pointColor       = GetPointColor(position, diffuse, normal, pbr);
 	
 	finalColor = ambientColor + directionalColor + pointColor;
 	

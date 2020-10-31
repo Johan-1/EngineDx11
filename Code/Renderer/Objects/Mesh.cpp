@@ -5,13 +5,16 @@
 #include "Systems.h"
 #include "DXErrorhandler.h"
 
-Mesh::Mesh(Entity* parent, unsigned int FLAGS, const wchar_t* diffuseMap, const wchar_t* normalMap, const wchar_t* specularMap, const wchar_t* emissiveMap, bool hasAlpha, bool hasHeightmap, float heightMapScale) :
+Mesh::Mesh(Entity* parent, unsigned int FLAGS, const wchar_t* diffuseMap, const wchar_t* normalMap, const wchar_t* metalicMap, const wchar_t* rougnessMap, const wchar_t* emissiveMap, bool hasAlpha, bool hasHeightmap, float heightMapScale) :
 	uvOffset(XMFLOAT2(0,0)),
 	FLAGS(FLAGS),
 	hasAlpha(hasAlpha),
 	hasHeightmap(hasHeightmap),
 	heightMapScale(heightMapScale)
 {
+	metalic  = 1.0f;
+	rougness = 1.0f;
+
 	// get pointer to transform component
 	if (parent != nullptr)
 		_transform = parent->GetComponent<TransformComponent>();
@@ -19,15 +22,17 @@ Mesh::Mesh(Entity* parent, unsigned int FLAGS, const wchar_t* diffuseMap, const 
 	// load into wstrings so we can check if they are empty
 	std::wstring diffuse(diffuseMap);
 	std::wstring normal(normalMap);
-	std::wstring specular(specularMap);
+	std::wstring metalic(metalicMap);
+	std::wstring rougness(rougnessMap);
 	std::wstring emissive(emissiveMap);
 
 	// set passed in textures or defualt ones
-	TexturePool& TP = *Systems::texturePool;
+	TexturePool& TP                     = *Systems::texturePool;
 	!diffuse.empty()  ? baseTextures[0] = TP.GetTexture(diffuseMap)  : baseTextures[0] = TP.GetTexture(L"Data/Textures/defaultDiffuse.dds");
 	!normal.empty()   ? baseTextures[1] = TP.GetTexture(normalMap)   : baseTextures[1] = TP.GetTexture(L"Data/Textures/defaultNormal.dds");
-	!specular.empty() ? baseTextures[2] = TP.GetTexture(specularMap) : baseTextures[2] = TP.GetTexture(L"Data/Textures/defaultSpecular.dds");
-	!emissive.empty() ? baseTextures[3] = TP.GetTexture(emissiveMap) : baseTextures[3] = TP.GetTexture(L"Data/Textures/defualtEmissive.dds");
+	!metalic.empty()  ? baseTextures[2] = TP.GetTexture(metalicMap)  : baseTextures[2] = TP.GetTexture(L"Data/Textures/white.dds");
+	!rougness.empty() ? baseTextures[3] = TP.GetTexture(rougnessMap) : baseTextures[3] = TP.GetTexture(L"Data/Textures/white.dds");
+	!emissive.empty() ? baseTextures[4] = TP.GetTexture(emissiveMap) : baseTextures[4] = TP.GetTexture(L"Data/Textures/defualtEmissive.dds");
 
 	// add this mesh to the renderer
 	AddRemoveToRenderer(true);
@@ -114,22 +119,19 @@ void Mesh::AddRemoveToRenderer(bool add)
 	// the standard shader renders directional and point lights, directional shadows, supports normal,specular and emissive maps
 	if ((FLAGS & STANDARD) == STANDARD)
 	{
-		if (hasAlpha) add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_FORWARD_ALPHA) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_FORWARD_ALPHA);
-		else          add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_DEFERRED) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_DEFERRED);   
+		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_DEFERRED) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_DEFERRED);
 	}
 
 	// if the meshes should be included when rendering reflection maps
 	if ((FLAGS & CAST_REFLECTION) == CAST_REFLECTION)
 	{
-		if (hasAlpha) add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_CAST_REFLECTION_ALPHA) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_CAST_REFLECTION_ALPHA);
-		else          add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_CAST_REFLECTION_OPAQUE) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_CAST_REFLECTION_OPAQUE);
+		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_CAST_REFLECTION) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_CAST_REFLECTION);
 	}
 
 	// if the mesh should be rendered to refraction maps
 	if ((FLAGS & REFRACT) == REFRACT)
 	{
-		if (hasAlpha) add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_REFRACT_ALPHA) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_REFRACT_ALPHA);
-		else          add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_REFRACT_OPAQUE) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_REFRACT_OPAQUE);
+		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_REFRACT_OPAQUE) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_REFRACT_OPAQUE);
 	}
 
 	// add to depth rendering for shadow casting
@@ -138,13 +140,13 @@ void Mesh::AddRemoveToRenderer(bool add)
 		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_DEPTH) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_DEPTH);
 		
 	// forward rendered alpha meshes with planar reflections
-	if ((FLAGS & ALPHA_REFLECTION) == ALPHA_REFLECTION)
-		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_ALPHA_REFLECTION) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_ALPHA_REFLECTION);
+	if ((FLAGS & PLANAR_REFLECTION) == PLANAR_REFLECTION)
+		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_PLANAR_REFLECTION) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_PLANAR_REFLECTION);
 
 	// forward rendered water meshes, renders both a reflection and refractionmap
 	// a DUDV map can be set by calling the model
-	if ((FLAGS & ALPHA_WATER) == ALPHA_WATER)
-		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_ALPHA_WATER) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_ALPHA_WATER);
+	if ((FLAGS & WATER) == WATER)
+		add ? renderer.AddMeshToRenderer(this, SHADER_TYPE::S_WATER) : renderer.RemoveMeshFromRenderer(this, SHADER_TYPE::S_WATER);
 
 	// debug meshes that only renders a colored wireframe
 	if ((FLAGS & WIREFRAME_COLOR) == WIREFRAME_COLOR)

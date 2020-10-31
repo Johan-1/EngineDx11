@@ -60,15 +60,17 @@ Framework::~Framework()
 void Framework::Start()
 {
 	//_islandTestScene = new IslandTestScene();
-	_testScene         = new SponzaTestScene();
-	_editor            = new MasterEditor();
+	//_testScene         = new SponzaTestScene();
+	_pbrTest = new PBRTestScene();
+	_editor  = new MasterEditor();
 }
 
 void Framework::Update()
 {
 	Systems::world->Update();
 	//_islandTestScene->Update(Systems::time->GetDeltaTime());
-	_testScene->Update();
+	//_testScene->Update();
+	_pbrTest->Update();
 	_editor->Update();
 }
 

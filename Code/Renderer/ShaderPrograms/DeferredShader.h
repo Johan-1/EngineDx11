@@ -57,7 +57,8 @@ private:
 		XMFLOAT4 cameraPos;
 		int      hasHeightmap;
 		float    heightScale;
-		XMFLOAT2 pad;
+		float    metalic;
+		float    rougness;
 	};
 
 	struct CBGeometryVertexInstanced

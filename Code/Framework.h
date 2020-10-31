@@ -3,6 +3,7 @@
 #include <string>
 #include "SponzaTestScene.h"
 #include "IslandTestScene.h"
+#include "PBRTestScene.h"
 
 class MasterEditor;
 class Window;
@@ -29,5 +30,6 @@ private:
 	MasterEditor* _editor;
 	SponzaTestScene* _testScene;
 	IslandTestScene* _islandTestScene;
+	PBRTestScene* _pbrTest;
 };
 

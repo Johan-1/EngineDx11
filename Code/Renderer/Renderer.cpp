@@ -46,7 +46,6 @@ Renderer::~Renderer()
 	delete quadShader;
 	delete particleShader;
 	delete imGUIShader;
-	delete forwardAlphaShader;
 	delete inputLayouts;
 	delete planarReflectionShader;
 	delete postProcessingShader;
@@ -69,7 +68,6 @@ void Renderer::Initialize()
 	quadShader             = new QuadShader();
 	particleShader         = new ParticleShader();
 	imGUIShader            = new ImGUIShader();
-	forwardAlphaShader     = new ForwardAlphaShader();
 	wireframeShader        = new WireframeShader();
 	planarReflectionShader = new PlanarReflectionShader();
 	postProcessingShader   = new PostProcessingShader();
@@ -146,7 +144,7 @@ void Renderer::Render()
 	RenderDepth();
 
 	// render all geometry and then fullscreen quad with lightcalculations
-	RenderDeferred();		
+	RenderDeferred();
 
 	// render skybox, will mask out all pixels that contains geometry in the fullscreen quad, leaving only the skybox rendered on "empty" pixels
 	inputLayouts->SetInputLayout(INPUT_LAYOUT_TYPE::LAYOUT_3D);
@@ -156,13 +154,10 @@ void Renderer::Render()
 	wireframeShader->RenderWireFrame(_meshes[S_WIREFRAME]);
 
 	// render planar reflections forward
-	planarReflectionShader->Render(_meshes[S_ALPHA_REFLECTION]);
+	planarReflectionShader->Render(_meshes[S_PLANAR_REFLECTION]);
 
 	// render reflective/refractive water
-	waterShader->Render(_meshes[S_ALPHA_WATER]);
-
-	// render alpha meshes
-	forwardAlphaShader->RenderForward(_meshes[S_FORWARD_ALPHA]);
+	waterShader->Render(_meshes[S_WATER]);
 
 	// render particles
 	inputLayouts->SetInputLayout(INPUT_LAYOUT_TYPE::LAYOUT_PARTICLE);

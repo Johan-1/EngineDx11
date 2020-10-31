@@ -11,17 +11,18 @@
 class ModelLoader
 {
 public:
-	static Mesh* CreateMesh(aiMesh* mesh, const aiScene* scene, unsigned int flags, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* specularMap, wchar_t* emissiveMap, bool useMaterial, float tiling, Entity* parent, float heightmapScale)
+	static Mesh* CreateMesh(aiMesh* mesh, const aiScene* scene, unsigned int flags, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* metalicMap, wchar_t* rougnessMap, wchar_t* emissiveMap, bool useMaterial, float tiling, Entity* parent, float heightmapScale)
 	{
 		// structures for vertex/index data
 		std::vector<Mesh::VertexData> vertices;
 		std::vector<unsigned long>    indices;
 
 		// set passed in textures, these will be used if useMaterial is set to false
-		std::wstring diffuse  = diffuseMap;
-		std::wstring normal   = normalMap;
-		std::wstring specular = specularMap;
-		std::wstring emissive = emissiveMap;
+		std::wstring diffuse   = diffuseMap;
+		std::wstring normal    = normalMap;
+		std::wstring metalic   = metalicMap;
+		std::wstring rougness  = rougnessMap;
+		std::wstring emissive  = emissiveMap;
 
 		// if we want to load the textures from a material file
 		if (useMaterial)
@@ -56,7 +57,7 @@ public:
 					aiString stringSpecular;
 					material->GetTexture(aiTextureType_SPECULAR, 0, &stringSpecular);
 
-					specular = GetRelativePathAndSetExtension(stringSpecular.C_Str(), ".dds");
+					metalic = GetRelativePathAndSetExtension(stringSpecular.C_Str(), ".dds");
 				}
 
 				// emissive map
@@ -137,7 +138,7 @@ public:
 		}
 
 		// create mesh and buffers
-		Mesh* modelMesh = new Mesh(parent, flags, diffuse.c_str(), normal.c_str(), specular.c_str(), emissive.c_str(), HasAlpha(diffuse), NormalmapHasHeight(normal), heightmapScale);
+		Mesh* modelMesh = new Mesh(parent, flags, diffuse.c_str(), normal.c_str(), metalic.c_str(), rougness.c_str(), emissive.c_str(), HasAlpha(diffuse), NormalmapHasHeight(normal), heightmapScale);
 		modelMesh->CreateBuffers(&vertices[0], &indices[0], (int)vertices.size(), (int)indices.size());
 
 		return modelMesh;
@@ -245,7 +246,7 @@ public:
 		unsigned long* indices = new unsigned long[6]{ 0,1,2,2,1,3 };
 
 		// create mesh and buffers
-		Mesh* mesh = new Mesh(parent, flags, diffuseMap, L"", L"", L"", HasAlpha(diffuseMap), false, 0);
+		Mesh* mesh = new Mesh(parent, flags, diffuseMap, L"", L"", L"", L"", HasAlpha(diffuseMap), false, 0);
 		mesh->CreateBuffers(vertices, indices, 24, 36);
 
 		delete[] vertices;
@@ -254,7 +255,7 @@ public:
 		return mesh;
 	}
 
-	static Mesh* CreateSphere(unsigned int flags, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* specularMap, wchar_t* emissiveMap, float tiling, Entity* parent, float heightmapScale)
+	static Mesh* CreateSphere(unsigned int flags, wchar_t* diffuseMap, wchar_t* normalMap, wchar_t* metalicMap, wchar_t* rougnessMap, wchar_t* emissiveMap, float tiling, Entity* parent, float heightmapScale)
 	{
 		//get assimp imoprter
 		Assimp::Importer importer;
@@ -265,7 +266,7 @@ public:
 		// assert if scene failed to be created
 		assert(scene != nullptr);
 
-		return CreateMesh(scene->mMeshes[scene->mRootNode->mChildren[0]->mMeshes[0]], scene, flags, diffuseMap, normalMap, specularMap, emissiveMap, tiling, false, parent, heightmapScale);
+		return CreateMesh(scene->mMeshes[scene->mRootNode->mChildren[0]->mMeshes[0]], scene, flags, diffuseMap, normalMap, metalicMap, rougnessMap, emissiveMap, tiling, false, parent, heightmapScale);
 	}
 };
 
