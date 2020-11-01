@@ -83,6 +83,8 @@ void SkyDomeWindow::RenderColorBlend(SkySettings* skySettings)
 	GUI::FloatSlider("5", "Top Layer Percent",    "this color will be used from mid to set value",    skySettings->skyMidColor.w,    100.0f,                     &skySettings->skyTopColor.w);
 	GUI::ClearItemWidth();
 
+	GUI::FloatSlider("19", "Light Intensity", "Intensity", 0.5f, 5.0f, &skySettings->lightIntensity);
+
 	// sky colors
 	GUI::Space(10);
 	GUI::Text(ImVec4(1, 1, 1, 1), "SKY COLORS");
@@ -208,6 +210,7 @@ void SkyDomeWindow::SaveSettings(const char* file, SkySettings* skySettings, Sun
 	// start the write
 	writer.StartObject();
 
+	JSON::WriteFloat(&writer, "lightIntensity",    skySettings->lightIntensity);
 	JSON::WriteFloat(&writer, "speedMultiplier",   skySettings->speedMultiplier);
 	JSON::WriteFloat(&writer, "cycleTimer",        skySettings->cycleTimer);
 	JSON::WriteFloat(&writer, "switchToMoonLightThreshold", skySettings->switchToMoonLightThreshold);

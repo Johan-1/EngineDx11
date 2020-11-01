@@ -395,6 +395,9 @@ void SkyDome::UpdateShadowLightColor(const float& delta)
 	LerpColorRGB(blendedLightColor, blendedLightColor, skySettings.nightDirLightColor,
 		skySettings.nightLightColorStartEndBlend.x, skySettings.nightLightColorStartEndBlend.y, sunMoon.sun.relativeHeight);
 
+	XMFLOAT4 lightMultiplier(skySettings.lightIntensity, skySettings.lightIntensity, skySettings.lightIntensity, skySettings.lightIntensity);
+	XMStoreFloat4(&blendedLightColor, XMVectorMultiply(XMLoadFloat4(&blendedLightColor), XMLoadFloat4(&lightMultiplier)));
+
 	// get the light strength fraction depending on if night or day
 	// this makes the light completely fade out before we switch between
 	// the sun and moon light sources. After the switch the light strength is 
@@ -474,6 +477,7 @@ void SkyDome::ReadSettings(const char* file)
 
 	assert(d.IsObject());
 
+	skySettings.lightIntensity                 = JSON::ReadFloat(d, "lightIntensity");
 	skySettings.speedMultiplier                = JSON::ReadFloat(d, "speedMultiplier");
 	skySettings.cycleTimer                     = JSON::ReadFloat(d, "cycleTimer");
 	skySettings.switchToMoonLightThreshold     = JSON::ReadFloat(d, "switchToMoonLightThreshold");

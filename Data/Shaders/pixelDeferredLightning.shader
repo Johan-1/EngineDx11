@@ -1,6 +1,6 @@
 #include "CommonPixel.shader"
 
-Texture2D    Texture[5];    // shadowmap, position, normal, diffuse, pbr	
+Texture2D    Texture[5];    // shadowmap, position, normal, baseColor, pbr	
 SamplerState SampleType[6]; // wrapTrilinear, clampTrilinear, wrapBilinear, clampBililinear, wrapAnisotropic, clampAnisotropic 	
  
 struct PointLight
@@ -38,65 +38,44 @@ struct PixelInputType
     float4 position : SV_POSITION;	
 };
 
-float4 GetAmbientColor(float4 diffuseMap)
+float3 GetAmbientColor(float4 diffuseMap)
 {
-	return diffuseMap * ambientColor;
+	return (diffuseMap * ambientColor).rgb;
 }
 
-float4 GetDirectionalColor(float4 position, float4 diffuse, float4 normal, float4 specularMap)
+float3 GetDirectionalColor(float4 position, float4 baseColor, float4 normal, float4 pbr)
 {	
 	float4 positionLightSpace = mul(position, lightViewProj);
 	
 	// get how much the pixel is in light 
 	float lightPercent = GetShadowLightFraction(Texture[0], SampleType[1], positionLightSpace, 0.00001);
 	if (lightPercent == 0)
-		return (0,0,0,0);
-										  
-	// sample from textures, multiply texturecolor with light percent to get blured shadow edges		
-	float4 textureColor = diffuse * lightPercent;
-			 
-	// get light intensity			 
-    float lightIntensity = saturate(dot(normal.xyz, lightDirectionDir)); 
-	
-	// get color based on texture, intensity and color of light
-    float4 color = textureColor * lightIntensity * lightColorDir; 
-	
-	float4 specular = float4(0,0,0,0);		
-	if (lightIntensity > 0)
-		specular = GetSpecularColorPhong(cameraPosition, position.rgb, lightDirectionDir, lightColorDir, lightIntensity, normal, specularMap);
-			
-	return color + specular; 
+	{
+		return float3(0,0,0);
+	}
+
+	return GetLightRadiance(position, baseColor * lightPercent, normal, pbr, cameraPosition.xyz, lightDirectionDir, lightColorDir.rgb);
 }
 
-float4 GetPointColor(float4 position, float4 diffuse, float4 normal, float4 specularMap)
+float3 GetPointColor(float4 position, float4 baseColor, float4 normal, float4 pbr)
 {
-	float4 finalColor = float4(0,0,0,1);
+	float3 finalColor = float3(0,0,0);
 	int numLights     = pointLights[0].numLights;
 	
-	for (int i =0; i < numLights; i++)
+	for (int i = 0; i < numLights; i++)
 	{				
-		float3 lightDir   = -normalize(position - pointLights[i].position);	
-		float dst         = length(position - pointLights[i].position);				
+		float3 lightDir   = -normalize(position.xyz - pointLights[i].position);
+		float dst         = length(position.xyz - pointLights[i].position);
 		float fallOff     = 1 - ((dst / pointLights[i].radius) * 0.5);
 		float attuniation = 1 / (pointLights[i].attConstant + pointLights[i].attLinear * dst + pointLights[i].attExponential * dst * dst);
 		attuniation       = (attuniation * pointLights[i].intensity) * fallOff;
 		
 		if (fallOff >= 0)
-		{					
+		{
 			float lightIntensity = saturate(dot(normal.xyz, lightDir)); 
-			float4 color         = diffuse * lightIntensity * float4(pointLights[i].color,1); 
-			float4 specular      = float4(0,0,0,0);	
-			
-			if(lightIntensity > 0 && dst < pointLights[i].radius)
-			{						
-				float3 vertexToCamera   = normalize(cameraPosition.xyz - position.xyz);
-				float3 reflection       = normalize(2 * lightIntensity * normal - lightDir);		
-				float specularIntensity = pow(saturate(dot(reflection, vertexToCamera)), specularMap.a * 255.0);
-				specular.rgb            = (pointLights[i].color * specularIntensity) * specularMap.x;
-			} 
-						
-			color += specular;	
-			finalColor += (color * attuniation);
+			float4 color = baseColor * lightIntensity * float4(pointLights[i].color, 1)* attuniation;
+
+			finalColor += GetLightRadiance(position, baseColor, normal, pbr, cameraPosition.xyz, lightDir, color.rgb);
 		}
 	}
       
@@ -107,24 +86,27 @@ float4 Main(PixelInputType input) : SV_TARGET
 {            
 	// alpha channel is flagged as 0 in the diffusemap if this is an emissive pixel
 	// dont do any lightning calculations and only return the emissive
-	// color that is stored in the diffuse map
-	float4 diffuse  = Texture[3].Load(int3(input.position.xy,0));
-	if (diffuse.a == 0)	
-		return diffuse;
+	// color that is stored in the baseColor map
+	float4 baseColor = Texture[3].Load(int3(input.position.xy,0));
+	if (baseColor.a == 0)	
+		return baseColor;
 		
 	float4 position = Texture[1].Load(int3(input.position.xy,0));
 	float4 normal   = Texture[2].Load(int3(input.position.xy,0));
-	float4 pbr      = Texture[4].Load(int3(input.position.xy,0));		
+	float4 pbr      = Texture[4].Load(int3(input.position.xy,0));
 		
 	float4 finalColor = float4(0,0,0,1);
 
-	float4 ambientColor     = GetAmbientColor(diffuse);
-	float4 directionalColor = GetDirectionalColor(position, diffuse, normal, pbr);
-	float4 pointColor       = GetPointColor(position, diffuse, normal, pbr);
+	float3 ambientColor     = GetAmbientColor(baseColor);
+	float3 directionalColor = GetDirectionalColor(position, baseColor, normal, pbr);
+	float3 pointColor       = GetPointColor(position, baseColor, normal, pbr);
 	
-	finalColor = ambientColor + directionalColor + pointColor;
+	finalColor.rgb = ambientColor + directionalColor + pointColor;
 	
-    return finalColor;	   
+	// do rainhart tonemapping
+	finalColor.rgb = finalColor.rgb / (1.0 + finalColor.rgb);
+	
+    return finalColor;
 }
 
 

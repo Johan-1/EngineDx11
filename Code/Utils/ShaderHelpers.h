@@ -276,13 +276,12 @@ namespace SHADER_HELPERS
 
 	static void CreateComputeShader(LPCWSTR filePath, ID3D11ComputeShader*& shader, ID3D10Blob*& buffer, char* entryPoint = "Main")
 	{
-
 		ID3D11Device*& device = Systems::dxManager->device;
 		ID3D10Blob* errorMessage = nullptr;
 
 		// compile the compute shader code into blob
 		HRESULT result = D3DCompileFromFile(filePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint, "cs_5_0", 0, 0, &buffer, &errorMessage);
-		if (FAILED(result)) DX_ERROR::PrintError(result, (std::string("failed to compile compute shader : ") + DX_ERROR::ConvertFromWString((wchar_t*)filePath)).c_str(), errorMessage);		
+		if (FAILED(result)) DX_ERROR::PrintError(result, (std::string("failed to compile compute shader : ") + DX_ERROR::ConvertFromWString((wchar_t*)filePath)).c_str(), errorMessage);
 
 		// create shader from blob
 		result = device->CreateComputeShader(buffer->GetBufferPointer(), buffer->GetBufferSize(), NULL, &shader);

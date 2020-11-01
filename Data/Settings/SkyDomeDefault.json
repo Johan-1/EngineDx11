@@ -1,166 +1,167 @@
 {
-    "speedMultiplier": 0.0,
-    "cycleTimer": 7.75,
-    "switchToMoonLightThreshold": -0.10000000149011612,
-    "sunsetLightColorStartEndBlend": [
-        0.20000000298023225,
-        0.0
-    ],
-    "nightLightColorStartEndBlend": [
-        0.0,
-        -0.10000000149011612
-    ],
-    "sunsetTopSkyColorStartEndBlend": [
-        0.5,
-        0.10000000149011612
-    ],
-    "nightTopSkyColorStartEndBlend": [
-        0.10000000149011612,
-        -0.30000001192092898
-    ],
-    "sunsetMidSkyColorStartEndBlend": [
-        0.44999998807907107,
-        0.0
-    ],
-    "nightMidSkyColorStartEndBlend": [
-        0.0,
-        -0.23999999463558198
-    ],
-    "dayLightStartEndfade": [
-        0.0,
-        -0.10000000149011612
-    ],
-    "nightLightStartEndfade": [
-        -0.20000000298023225,
-        -0.10000000149011612
-    ],
-    "shadowMapDistance": [
-        300.0,
-        300.0,
-        300.0
-    ],
-    "startRotation": [
-        0.0,
-        108.77999877929688,
-        0.0
-    ],
-    "endRotation": [
-        360.0,
-        108.77999877929688,
-        0.0
-    ],
-    "normalDirLightColor": [
-        0.800000011920929,
-        0.800000011920929,
-        0.800000011920929,
-        0.0
-    ],
-    "sunsetDirLightColor": [
-        1.0,
-        0.3218243718147278,
-        0.15686273574829102,
-        1.0
-    ],
-    "nightDirLightColor": [
-        0.10000000149011612,
-        0.10000000149011612,
-        0.25999999046325686,
-        1.0
-    ],
-    "topSkyColorDay": [
-        0.0,
-        0.22163265943527223,
-        0.739130437374115,
-        1.0
-    ],
-    "topSkyColorSunSet": [
-        0.22515949606895448,
-        0.2752312421798706,
-        0.5380434989929199,
-        1.0
-    ],
-    "topSkyColorNight": [
-        0.0,
-        0.0,
-        0.0,
-        1.0
-    ],
-    "midSkyColorDay": [
-        0.4476919174194336,
-        0.4945651888847351,
-        0.295663982629776,
-        1.0
-    ],
-    "midSkyColorSunSet": [
-        0.945652186870575,
-        0.11820652335882187,
-        0.1325845718383789,
-        1.0
-    ],
-    "midSkyColorNight": [
-        0.006512142717838287,
-        0.0,
-        0.08695650100708008,
-        1.0
-    ],
-    "skyBottomColor": [
-        0.3995746374130249,
-        0.4645126760005951,
-        0.4836956262588501,
-        0.0
-    ],
-    "RENDER_MODE": 0,
-    "cubeMap": "Data/SkyBoxes/DarkCloudy.dds",
-    "sunDayColorTint": [
-        0.9959220290184021,
-        1.0,
-        0.657608687877655
-    ],
-    "moonDayColorTint": [
-        1.0,
-        1.0,
-        1.0
-    ],
-    "sunSunsetColorTint": [
-        1.0,
-        0.4005197286605835,
-        0.06521737575531006
-    ],
-    "moonSunsetColorTint": [
-        0.0,
-        0.021892070770263673,
-        1.0
-    ],
-    "sunBeginEndfade": [
-        -0.10000000149011612,
-        -0.1899999976158142
-    ],
-    "moonBeginEndfade": [
-        0.3700000047683716,
-        0.10999999940395355
-    ],
-    "sunMinMaxDst": [
-        0.3999999761581421,
-        3.2300000190734865
-    ],
-    "moonMinMaxDst": [
-        9.09000015258789,
-        12.729999542236329
-    ],
-    "sunBeginEndDstLerp": [
-        0.5399999618530273,
-        -0.1899999976158142
-    ],
-    "moonBeginEndDstLerp": [
-        0.5,
-        -0.25
-    ],
-    "sunBeginEndColorBlend": [
-        0.5,
-        -0.15000000596046449
-    ],
-    "moonBeginEndColorBlend": [
-        0.5,
-        -0.15000000596046449
-    ]
+  "lightIntensity": 2.0,
+  "speedMultiplier": 1.6899999380111695,
+  "cycleTimer": 0.9558577537536621,
+  "switchToMoonLightThreshold": -0.10000000149011612,
+  "sunsetLightColorStartEndBlend": [
+    0.20000000298023225,
+    0.0
+  ],
+  "nightLightColorStartEndBlend": [
+    0.0,
+    -0.10000000149011612
+  ],
+  "sunsetTopSkyColorStartEndBlend": [
+    0.5,
+    0.10000000149011612
+  ],
+  "nightTopSkyColorStartEndBlend": [
+    0.10000000149011612,
+    -0.30000001192092898
+  ],
+  "sunsetMidSkyColorStartEndBlend": [
+    0.44999998807907107,
+    0.0
+  ],
+  "nightMidSkyColorStartEndBlend": [
+    0.0,
+    -0.23999999463558198
+  ],
+  "dayLightStartEndfade": [
+    0.0,
+    -0.10000000149011612
+  ],
+  "nightLightStartEndfade": [
+    -0.20000000298023225,
+    -0.10000000149011612
+  ],
+  "shadowMapDistance": [
+    300.0,
+    300.0,
+    300.0
+  ],
+  "startRotation": [
+    0.0,
+    121.72999572753906,
+    0.0
+  ],
+  "endRotation": [
+    360.0,
+    121.72999572753906,
+    0.0
+  ],
+  "normalDirLightColor": [
+    1.0,
+    0.9999899864196777,
+    0.9999899864196777,
+    0.0
+  ],
+  "sunsetDirLightColor": [
+    1.0,
+    0.3218243718147278,
+    0.15686273574829102,
+    1.0
+  ],
+  "nightDirLightColor": [
+    0.13654890656471253,
+    0.13661174476146699,
+    0.375,
+    1.0
+  ],
+  "topSkyColorDay": [
+    0.0,
+    0.22163265943527223,
+    0.739130437374115,
+    1.0
+  ],
+  "topSkyColorSunSet": [
+    0.22515949606895448,
+    0.2752312421798706,
+    0.5380434989929199,
+    1.0
+  ],
+  "topSkyColorNight": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+  ],
+  "midSkyColorDay": [
+    0.4476919174194336,
+    0.4945651888847351,
+    0.295663982629776,
+    1.0
+  ],
+  "midSkyColorSunSet": [
+    0.945652186870575,
+    0.11820652335882187,
+    0.1325845718383789,
+    1.0
+  ],
+  "midSkyColorNight": [
+    0.006512142717838287,
+    0.0,
+    0.08695650100708008,
+    1.0
+  ],
+  "skyBottomColor": [
+    0.3995746374130249,
+    0.4645126760005951,
+    0.4836956262588501,
+    0.0
+  ],
+  "RENDER_MODE": 0,
+  "cubeMap": "Data/SkyBoxes/DarkCloudy.dds",
+  "sunDayColorTint": [
+    0.9959220290184021,
+    1.0,
+    0.657608687877655
+  ],
+  "moonDayColorTint": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "sunSunsetColorTint": [
+    1.0,
+    0.4005197286605835,
+    0.06521737575531006
+  ],
+  "moonSunsetColorTint": [
+    0.0,
+    0.021892070770263673,
+    1.0
+  ],
+  "sunBeginEndfade": [
+    -0.10000000149011612,
+    -0.1899999976158142
+  ],
+  "moonBeginEndfade": [
+    0.3700000047683716,
+    0.10999999940395355
+  ],
+  "sunMinMaxDst": [
+    0.3999999761581421,
+    3.2300000190734865
+  ],
+  "moonMinMaxDst": [
+    9.09000015258789,
+    12.729999542236329
+  ],
+  "sunBeginEndDstLerp": [
+    0.5399999618530273,
+    -0.1899999976158142
+  ],
+  "moonBeginEndDstLerp": [
+    0.5,
+    -0.25
+  ],
+  "sunBeginEndColorBlend": [
+    0.5,
+    -0.15000000596046449
+  ],
+  "moonBeginEndColorBlend": [
+    0.5,
+    -0.15000000596046449
+  ]
 }

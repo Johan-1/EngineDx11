@@ -1,5 +1,6 @@
 static int heightMinSampleCount = 8;
 static int heightMaxSampleCount = 64;
+static float PI = 3.14159265359;
 
 float2 GetProjectiveTexCoords(float4 clipPosition)
 {
@@ -156,5 +157,74 @@ float2 GetPOMOffset(Texture2D normalMap, SamplerState samplerType, float3 normal
 	}
 	
 	return finalTexOffset;
+}
+
+float3 fresnelSchlick(float cosTheta, float3 F0)
+{
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}  
+
+float DistributionGGX(float3 N, float3 H, float roughness)
+{
+    float a      = roughness*roughness;
+    float a2     = a*a;
+    float NdotH  = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+	
+    float num   = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = PI * denom * denom;
+	
+    return num / denom;
+}
+
+float GeometrySchlickGGX(float NdotV, float roughness)
+{
+    float r = (roughness + 1.0);
+    float k = (r*r) / 8.0;
+
+    float num   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+	
+    return num / denom;
+}
+
+float GeometrySmith(float3 N, float3 V, float3 L, float roughness)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+	
+    return ggx1 * ggx2;
+}
+
+float3 GetLightRadiance(float4 position, float4 baseColor, float4 normal, float4 pbr, float3 cameraPosition, float3 lightDirection, float3 lightColor)
+{
+	float3 radiance = lightColor.rgb;
+
+	float3 N = normalize(normal.xyz);
+	float3 V = normalize(cameraPosition.xyz - position.xyz);
+	float3 L = normalize(lightDirection);
+	float3 H = normalize(V + L);
+
+	float3 F0 = lerp(float3(0.04, 0.04, 0.04), baseColor.rgb, float3(pbr.r, pbr.r, pbr.r));
+
+	// cook-torrance brdf
+	float NDF = DistributionGGX(N, H, pbr.g);
+	float G   = GeometrySmith(N, V, L, pbr.g);
+	float3 F  = fresnelSchlick(max(dot(H, V), 0.0), F0);
+
+	float3 kS = F;
+	float3 kD = float3(1.0, 1.0, 1.0) - kS;
+	kD *= 1.0 - pbr.r;
+
+	float3 numerator = NDF * G * F;
+	float  denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
+	float3 specular = numerator / max(denominator, 0.001);
+
+	float NdotL = max(dot(N, L), 0.0);
+
+	return (kD * baseColor.rgb / PI + specular) * radiance * NdotL;
 }
 

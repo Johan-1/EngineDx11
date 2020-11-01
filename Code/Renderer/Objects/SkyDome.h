@@ -52,6 +52,8 @@ struct SkySettings
 
 	float switchToMoonLightThreshold = -0.1f;
 
+	float lightIntensity = 1.0f;
+
 	// start/end blend values
 	XMFLOAT2 sunsetLightColorStartEndBlend  = XMFLOAT2(0.2f, 0.0f);
 	XMFLOAT2 nightLightColorStartEndBlend   = XMFLOAT2(0.0f, -0.1f);

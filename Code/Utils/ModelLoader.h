@@ -41,12 +41,33 @@ public:
 
 					diffuse = GetRelativePathAndSetExtension(stringDiffuse.C_Str(), ".dds");
 				}
+				if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+				{
+					aiString stringDiffuse;
+					material->GetTexture(aiTextureType_DIFFUSE, 0, &stringDiffuse);
+
+					diffuse = GetRelativePathAndSetExtension(stringDiffuse.C_Str(), ".dds");
+				}
 
 				// normal map
 				if (material->GetTextureCount(aiTextureType_NORMAL_CAMERA) > 0)
 				{
 					aiString stringNormal;
 					material->GetTexture(aiTextureType_NORMAL_CAMERA, 0, &stringNormal);
+
+					normal = GetRelativePathAndSetExtension(stringNormal.C_Str(), ".dds");
+				}
+				if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
+				{
+					aiString stringNormal;
+					material->GetTexture(aiTextureType_NORMALS, 0, &stringNormal);
+
+					normal = GetRelativePathAndSetExtension(stringNormal.C_Str(), ".dds");
+				}
+				if (material->GetTextureCount(aiTextureType_HEIGHT) > 0)
+				{
+					aiString stringNormal;
+					material->GetTexture(aiTextureType_HEIGHT, 0, &stringNormal);
 
 					normal = GetRelativePathAndSetExtension(stringNormal.C_Str(), ".dds");
 				}
@@ -59,12 +80,26 @@ public:
 
 					metalic = GetRelativePathAndSetExtension(stringSpecular.C_Str(), ".dds");
 				}
+				if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
+				{
+					aiString stringSpecular;
+					material->GetTexture(aiTextureType_SPECULAR, 0, &stringSpecular);
+
+					metalic = GetRelativePathAndSetExtension(stringSpecular.C_Str(), ".dds");
+				}
 
 				// rougness map
-				if (material->GetTextureCount(aiTextureType_METALNESS) > 0)
+				if (material->GetTextureCount(aiTextureType_DIFFUSE_ROUGHNESS) > 0)
 				{
 					aiString stringRougness;
-					material->GetTexture(aiTextureType_METALNESS, 0, &stringRougness);
+					material->GetTexture(aiTextureType_DIFFUSE_ROUGHNESS, 0, &stringRougness);
+
+					rougness = GetRelativePathAndSetExtension(stringRougness.C_Str(), ".dds");
+				}
+				if (material->GetTextureCount(aiTextureType_SHININESS) > 0)
+				{
+					aiString stringRougness;
+					material->GetTexture(aiTextureType_SHININESS, 0, &stringRougness);
 
 					rougness = GetRelativePathAndSetExtension(stringRougness.C_Str(), ".dds");
 				}
@@ -77,6 +112,14 @@ public:
 
 					emissive = GetRelativePathAndSetExtension(emissiveSpecular.C_Str(), ".dds");
 				}
+				if (material->GetTextureCount(aiTextureType_EMISSIVE) > 0)
+				{
+					aiString emissiveSpecular;
+					material->GetTexture(aiTextureType_EMISSIVE, 0, &emissiveSpecular);
+
+					emissive = GetRelativePathAndSetExtension(emissiveSpecular.C_Str(), ".dds");
+				}
+
 			}
 		}
 

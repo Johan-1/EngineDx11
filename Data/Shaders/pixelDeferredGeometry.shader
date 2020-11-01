@@ -56,8 +56,8 @@ Output Main(PixelInputType input)
 	output.position = input.worldPosition;
 	output.normal   = float4(bumpNormal.xyz,1);
 	output.diffuse  = float4(textureColor.rgb, 1);
-	output.pbr.x    = metalicMap.x  * u_metalic;
-	output.pbr.y    = rougnessMap.x * u_rougness;
+	output.pbr.r    = metalicMap.x  * u_metalic;
+	output.pbr.g    = rougnessMap.x * u_rougness;
 	
 	output.pbr.a = 1;
 	

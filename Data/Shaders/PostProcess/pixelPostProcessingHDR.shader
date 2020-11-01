@@ -74,7 +74,7 @@ float4 Main(PixelInputType input) : SV_TARGET
 		else if (u_tonemapType == 1) finalColor.rgb = Tonemap2(finalColor.rgb);
 		else if (u_tonemapType == 2) finalColor.rgb = Tonemap3(finalColor.rgb, u_tonemap3Exposure);
 	}
-	
+
 	return finalColor;
 }
 
