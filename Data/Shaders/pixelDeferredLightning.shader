@@ -73,7 +73,7 @@ float3 GetPointColor(float4 position, float4 baseColor, float4 normal, float4 pb
 		if (fallOff >= 0)
 		{
 			float lightIntensity = saturate(dot(normal.xyz, lightDir)); 
-			float4 color = baseColor * lightIntensity * float4(pointLights[i].color, 1)* attuniation;
+			float4 color = baseColor * lightIntensity * float4(pointLights[i].color, 1) * attuniation;
 
 			finalColor += GetLightRadiance(position, baseColor, normal, pbr, cameraPosition.xyz, lightDir, color.rgb);
 		}

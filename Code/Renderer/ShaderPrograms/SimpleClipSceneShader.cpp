@@ -107,9 +107,7 @@ void SimpleClipSceneShader::RenderScene(std::vector<Mesh*>& opaqueMeshes, std::v
 		// get the texture array of mesh
 		ID3D11ShaderResourceView** meshTextures = mesh->baseTextures;
 
-		// specular map is not sent to this shader tho this is not calculated
-		ID3D11ShaderResourceView* texArray[3] = { meshTextures[0], meshTextures[1], meshTextures[3] };
-		devCon->PSSetShaderResources(0, 3, texArray);
+		devCon->PSSetShaderResources(0, 5, meshTextures);
 
 		// upload and draw the mesh
 		mesh->UploadBuffers();
@@ -118,8 +116,8 @@ void SimpleClipSceneShader::RenderScene(std::vector<Mesh*>& opaqueMeshes, std::v
 	}
 
 	// unbind so we can use resources as input in next stages
-	ID3D11ShaderResourceView* nullSRV[3] = { NULL, NULL, NULL };
-	devCon->PSSetShaderResources(0, 3, nullSRV);
+	ID3D11ShaderResourceView* nullSRV[5] = { NULL, NULL, NULL, NULL, NULL };
+	devCon->PSSetShaderResources(0, 5, nullSRV);
 
 	//-------------------------------------------------------------------------------------------- INSTANCED OPAQUE
 	// change to instanced shader and constant buffer
@@ -159,8 +157,8 @@ void SimpleClipSceneShader::RenderScene(std::vector<Mesh*>& opaqueMeshes, std::v
 			devCon->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 			// specular map is not sent to this shader tho this is not calculated
-			ID3D11ShaderResourceView* texArray[3] = { mesh->baseTextures[0], mesh->baseTextures[1], mesh->baseTextures[3] };
-			devCon->PSSetShaderResources(0, 3, texArray);
+			ID3D11ShaderResourceView** meshTextures = mesh->baseTextures;
+			devCon->PSSetShaderResources(0, 3, meshTextures);
 
 			// draw all instances of this mesh
 			devCon->DrawIndexedInstanced(mesh->numIndices, model->numInstances, 0, 0, 0);

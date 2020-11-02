@@ -153,16 +153,19 @@ void PlanarReflectionShader::Render(std::vector<Mesh*>& reflectionMeshes)
 
 		// set the fraction of the reflection blending with the texture color
 		cbReflect.reflectiveFraction = mesh->planarReflectionFraction;
+		cbReflect.cameraPosition     = camTrans->position;
+		cbReflect.metalic            = mesh->metalic;
+		cbReflect.roughness          = mesh->rougness;
 
 		// update vertex constant buffer
 		SHADER_HELPERS::UpdateConstantBuffer((void*)&cbVertex,  sizeof(CBVertex),  _CBVertex);
 		SHADER_HELPERS::UpdateConstantBuffer((void*)&cbReflect, sizeof(CBReflect), _CBReflect);
 
 		// fill texture array with all textures including the shadow map and reflection map
-		ID3D11ShaderResourceView* t[6] = { mesh->baseTextures[0], mesh->baseTextures[1], mesh->baseTextures[2], mesh->baseTextures[3], cameraLight->renderTexture, reflectionSRV };
+		ID3D11ShaderResourceView* t[7] = { mesh->baseTextures[0], mesh->baseTextures[1], mesh->baseTextures[2], mesh->baseTextures[3], mesh->baseTextures[4], cameraLight->renderTexture, reflectionSRV };
 
 		// set SRV's
-		devCon->PSSetShaderResources(0, 6, t);
+		devCon->PSSetShaderResources(0, 7, t);
 
 		mesh->UploadBuffers();
 
@@ -170,6 +173,6 @@ void PlanarReflectionShader::Render(std::vector<Mesh*>& reflectionMeshes)
 	}
 
 	// unbind so we can use resources as input in next stages
-	ID3D11ShaderResourceView* nullSRV[6] = { NULL, NULL, NULL, NULL, NULL, NULL };
-	devCon->PSSetShaderResources(0, 6, nullSRV);
+	ID3D11ShaderResourceView* nullSRV[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+	devCon->PSSetShaderResources(0, 7, nullSRV);
 }

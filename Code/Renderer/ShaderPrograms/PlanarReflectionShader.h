@@ -58,7 +58,10 @@ private:
 	struct CBReflect
 	{
 		float    reflectiveFraction;
-		XMFLOAT3 pad;
+		XMFLOAT3 cameraPosition;
+		float metalic;
+		float roughness;
+		XMFLOAT2 pad;
 	};
 };
 

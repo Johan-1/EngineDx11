@@ -146,7 +146,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>NotSet</SubSystem>
-      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;dxgi.lib;XInput.lib;dinput8.lib;dxguid.lib;winmm.lib;assimp-vc141-mtd.lib;IrrXMLd.lib;zlibd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;dxgi.lib;XInput.lib;dinput8.lib;dxguid.lib;winmm.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

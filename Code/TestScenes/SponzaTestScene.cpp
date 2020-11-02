@@ -34,9 +34,8 @@ SponzaTestScene::SponzaTestScene()
 	_skyDome = renderer.skyDome = new SkyDome("Data/Settings/SkyDomeDefault.json");
 
 	renderer.ShowGBufferDebugImages();
-	renderer.postProcessingShader->ShowBrightnessMapDebugQuad();
-	renderer.postProcessingShader->ShowBloomBlurP2DebugQuad();
-	renderer.postProcessingShader->ShowDofMapDebugQuad();
+	renderer.planarReflectionShader->ShowDebugQuads();
+
 
 	// create game camera
 	Entity* cameraGame = new Entity();
@@ -52,7 +51,7 @@ SponzaTestScene::SponzaTestScene()
 	CM.currentCameraUI = cameraUI->GetComponent<CameraComponent>();
 
 	// set ambient light color	
-	LM.ambientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
+	LM.ambientColor = XMFLOAT4(0.05f, 0.05f, 0.05f, 1.0f);
 
 	// create directional light and give it pointer to the depth render camera transform
 	// it will use the forward of this camera as the light direction
@@ -61,44 +60,95 @@ SponzaTestScene::SponzaTestScene()
 
 	Entity* sponza = new Entity();
 	sponza->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.025f, 0.025f, 0.025f));
-	sponza->AddComponent<ModelComponent>()->InitModel("Data/Models/sponza.obj", STANDARD | CAST_SHADOW_DIR);
+	sponza->AddComponent<ModelComponent>()->InitModel("Data/Models/sponza.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION);
 
 	Entity* smallSphereLight = new Entity();
-	smallSphereLight->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 2.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
-	smallSphereLight->AddComponent<PingPongComponent>()->Init(XMFLOAT3(10.0f, 0.0f, 0.0f), 1.5f);
-	smallSphereLight->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/emissiveOrange.dds");
-	smallSphereLight->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1.0f, 1.0f, 1.0f), 0.0f, 1.0f, 0.2);
+	smallSphereLight->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 5.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight->AddComponent<PingPongComponent>()->Init(XMFLOAT3(30.0f, 0.0f, 0.0f), 1.5f);
+	smallSphereLight->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight->AddComponent<LightPointComponent>()->Init(20, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
 
-	// big sphere lights
+	Entity* smallSphereLight1 = new Entity();
+	smallSphereLight1->AddComponent<TransformComponent>()->Init(XMFLOAT3(-20, 2.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight1->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight1->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight2 = new Entity();
+	smallSphereLight2->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 2.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight2->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight2->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight3 = new Entity();
+	smallSphereLight3->AddComponent<TransformComponent>()->Init(XMFLOAT3(20, 2.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight3->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight3->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight4 = new Entity();
+	smallSphereLight4->AddComponent<TransformComponent>()->Init(XMFLOAT3(30, 2.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight4->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight4->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight5 = new Entity();
+	smallSphereLight5->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30, 2.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight5->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight5->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight6 = new Entity();
+	smallSphereLight6->AddComponent<TransformComponent>()->Init(XMFLOAT3(-15, 20.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight6->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight6->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight7 = new Entity();
+	smallSphereLight7->AddComponent<TransformComponent>()->Init(XMFLOAT3(-5, 20.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight7->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight7->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight8 = new Entity();
+	smallSphereLight8->AddComponent<TransformComponent>()->Init(XMFLOAT3(15, 20.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight8->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight8->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight9 = new Entity();
+	smallSphereLight9->AddComponent<TransformComponent>()->Init(XMFLOAT3(25, 20.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight9->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight9->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
+	Entity* smallSphereLight10 = new Entity();
+	smallSphereLight10->AddComponent<TransformComponent>()->Init(XMFLOAT3(-25, 20.5f, 0.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
+	smallSphereLight10->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	smallSphereLight10->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
+
 	Entity* BigSphereLight1 = new Entity();
-	BigSphereLight1->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30.0f, 5.5f, -10.12f), XMFLOAT3(0, 0, 0), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	BigSphereLight1->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30.0f, 5.5f, -10.12f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
 	BigSphereLight1->AddComponent<PingPongComponent>()->Init(XMFLOAT3(0.0f, 0.1f, 0.0f), 1.5f);
-	BigSphereLight1->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/emissivePurple.dds");
-	BigSphereLight1->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1, 1, 1), 0.0f, 1.0f, 0.2);
+	BigSphereLight1->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	BigSphereLight1->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
 
 	Entity* BigSphereLight2 = new Entity();
-	BigSphereLight2->AddComponent<TransformComponent>()->Init(XMFLOAT3(28.0f, 5.5, -10.12f), XMFLOAT3(0, 0, 0), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	BigSphereLight2->AddComponent<TransformComponent>()->Init(XMFLOAT3(28.0f, 5.5, -10.12f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
 	BigSphereLight2->AddComponent<PingPongComponent>()->Init(XMFLOAT3(0.0f, 0.1f, 0.0f), 1.5f);
-	BigSphereLight2->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/emissiveRed.dds");
-	BigSphereLight2->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1, 1, 1), 0.0f, 1.0f, 0.2);
+	BigSphereLight2->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	BigSphereLight2->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
 
 	Entity* BigSphereLight3 = new Entity();
-	BigSphereLight3->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30, 5.5f, 11.25f), XMFLOAT3(0, 0, 0), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	BigSphereLight3->AddComponent<TransformComponent>()->Init(XMFLOAT3(-30, 5.5f, 11.25f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
 	BigSphereLight3->AddComponent<PingPongComponent>()->Init(XMFLOAT3(0.0f, 0.1f, 0.0f), 1.5f);
-	BigSphereLight3->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/emissiveBlue.dds");
-	BigSphereLight3->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1, 1, 1), 0.0f, 1.0f, 0.2);
+	BigSphereLight3->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	BigSphereLight3->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
 
 	Entity* BigSphereLight4 = new Entity();
-	BigSphereLight4->AddComponent<TransformComponent>()->Init(XMFLOAT3(28.0f, 5.5, 11.25f), XMFLOAT3(0, 0, 0), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	BigSphereLight4->AddComponent<TransformComponent>()->Init(XMFLOAT3(28.0f, 5.5, 11.25f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.2, 0.2, 0.2));
 	BigSphereLight4->AddComponent<PingPongComponent>()->Init(XMFLOAT3(0.0f, 0.1f, 0.0f), 1.5f);
-	BigSphereLight4->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/emissivePink.dds");
-	BigSphereLight4->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1, 1, 1), 0.0f, 1.0f, 0.2);
+	BigSphereLight4->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR | CAST_REFLECTION, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
+	BigSphereLight4->AddComponent<LightPointComponent>()->Init(10, 20, XMFLOAT3(1, 1, 1), 1.0f, 1.0f, 0);
 
 	// create reflective marble floor
-	//Entity* floor = new Entity();
-	//floor->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 0.02f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(600, 1, 600));
-	//floor->AddComponent<ModelComponent>()->InitModel("Data/Models/plane.obj", PLANAR_REFLECTION | REFRACT, L"Data/Textures/sponza_floor_a_diff.dds", L"Data/Textures/sponza_floor_a_ddn.dds", L"Data/Textures/FlatHighSpecular.dds", L"", false, 800.0f);
-	//floor->GetComponent<ModelComponent>()->meshes[0]->planarReflectionFraction = 0.2f;
+	Entity* floor = new Entity();
+	floor->AddComponent<TransformComponent>()->Init(XMFLOAT3(0, 0.02f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(600, 1, 600));
+	floor->AddComponent<ModelComponent>()->InitModel("Data/Models/plane.obj", PLANAR_REFLECTION, L"Data/Textures/Sponza_Floor_diffuse.dds", L"Data/Textures/Sponza_Floor_normal.dds", L"", L"Data/Textures/Sponza_Floor_roughness.dds", L"", false, 800.0f);
+	floor->GetComponent<ModelComponent>()->meshes[0]->planarReflectionFraction = 0.2f;
+	floor->GetComponent<ModelComponent>()->meshes[0]->metalic = 0.1f;
+	//floor->GetComponent<ModelComponent>()->meshes[0]->rougness = 0.1f;
 
 	// create water
 	//Entity* water = new Entity();
@@ -206,22 +256,26 @@ SponzaTestScene::SponzaTestScene()
 	
 	// chandeler fires and lights
 	Entity* fireHanging1 = new Entity();
-	fireHanging1->AddComponent<TransformComponent>()->Init(XMFLOAT3(12.25f, 3.0f, -3.5f));
+	fireHanging1->AddComponent<TransformComponent>()->Init(XMFLOAT3(12.25f, 3.0f, -3.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.025f, 0.025f, 0.025f));
+	fireHanging1->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
 	fireHanging1->AddComponent<ParticleSystemComponent>()->Init("Data/Particles/fire.json");
 	fireHanging1->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1.0f, 1.0f, 0.6f), 0.0f, 1.0f, 0.2f);
 
 	Entity* fireHanging2 = new Entity();
-	fireHanging2->AddComponent<TransformComponent>()->Init(XMFLOAT3(12.25f, 3.0f, 5.5f));
+	fireHanging2->AddComponent<TransformComponent>()->Init(XMFLOAT3(12.25f, 3.0f, 5.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.025f, 0.025f, 0.025f));
+	fireHanging2->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
 	fireHanging2->AddComponent<ParticleSystemComponent>()->Init("Data/Particles/fire.json");
 	fireHanging2->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1.0f, 1.0f, 0.6f), 0.0f, 1.0f, 0.2f);
 
 	Entity* fireHanging3 = new Entity();
-	fireHanging3->AddComponent<TransformComponent>()->Init(XMFLOAT3(-15.5f, 3.0f, -3.5f));
+	fireHanging3->AddComponent<TransformComponent>()->Init(XMFLOAT3(-15.5f, 3.0f, -3.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.025f, 0.025f, 0.025f));
+	fireHanging3->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
 	fireHanging3->AddComponent<ParticleSystemComponent>()->Init("Data/Particles/fire.json");
 	fireHanging3->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1.0f, 1.0f, 0.6f), 0.0f, 1.0f, 0.2f);
 
 	Entity* fireHanging4 = new Entity();
-	fireHanging4->AddComponent<TransformComponent>()->Init(XMFLOAT3(-15.5f, 3.0f, 5.5f));
+	fireHanging4->AddComponent<TransformComponent>()->Init(XMFLOAT3(-15.5f, 3.0f, 5.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0.025f, 0.025f, 0.025f));
+	fireHanging4->AddComponent<ModelComponent>()->InitModel("Data/Models/sphere.obj", STANDARD | CAST_SHADOW_DIR, L"", L"", L"", L"", L"Data/Textures/white_emissive.dds");
 	fireHanging4->AddComponent<ParticleSystemComponent>()->Init("Data/Particles/fire.json");
 	fireHanging4->AddComponent<LightPointComponent>()->Init(10, 10, XMFLOAT3(1.0f, 1.0f, 0.6f), 0.0f, 1.0f, 0.2f);
 
