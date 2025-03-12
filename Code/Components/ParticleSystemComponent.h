@@ -4,6 +4,7 @@
 #include "DXManager.h"
 #include "DXBlendStates.h"
 #include "TransformComponent.h"
+#include <string>
 
 using namespace DirectX;
 

@@ -23,7 +23,7 @@ void SkyDomeWindow::Render()
 	SkyDome*& skyDome         = Systems::renderer->skyDome;
 	SkySettings* skySettings = &skyDome->skySettings;
 	SunMoon* sunMoon         = &skyDome->sunMoon;
-	ID3D11ShaderResourceView* previewTex = Systems::texturePool->GetTexture(L"Textures/domeMap.dds", false);
+	ID3D11ShaderResourceView* previewTex = Systems::texturePool->GetTexture(L"Data/Textures/domeMap.dds", false);
 
 	GUI::BeginWindow("SkyDome Settings", 0.6f, SystemSettings::SCREEN_WIDTH * 0.20f, SystemSettings::SCREEN_HEIGHT * 0.9f , 0, 0, 0, 0);
 

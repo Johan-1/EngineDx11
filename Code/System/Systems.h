@@ -5,7 +5,7 @@
 #include "GuiManager.h"
 #include "LightManager.h"
 #include "CameraManager.h"
-#include "Time.h"
+#include "GameTime.h"
 #include "World.h"
 #include "Window.h"
 #include "Texturepool.h"
@@ -29,7 +29,7 @@ public:
 	static GuiManager*    guiManager;
 	static LightManager*  lightManager;
 	static CameraManager* cameraManager;
-	static Time*          time;
+	static GameTime*      time;
 	static TexturePool*   texturePool;
 };
 

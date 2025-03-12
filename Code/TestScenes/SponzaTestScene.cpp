@@ -253,11 +253,11 @@ SponzaTestScene::SponzaTestScene()
 	_sineWaves[0] = sin(_sineTimers[0]);
 	_sineWaves[1] = sin(_sineTimers[1]);
 
-	_instancedSpheres = new InstancedModel("Data/Models/sphere.obj", INSTANCED_OPAQUE | INSTANCED_CAST_SHADOW_DIR | INSTANCED_CAST_REFLECTION, L"Data/Textures/stone2.dds", L"Data/Textures/stone2Normal_H.dds", L"Data/Textures/stone2Specular.dds", L"", false, 3.0f, 0.08f);
+	_instancedSpheres = new InstancedModel("Data/Models/cube.obj", INSTANCED_OPAQUE | INSTANCED_CAST_SHADOW_DIR | INSTANCED_CAST_REFLECTION, L"Data/Textures/stone2.dds", L"Data/Textures/stone2Normal_H.dds", L"Data/Textures/stone2Specular.dds", L"", false, 2.0f, 0.06f);
 	float spacing = 2.0f;
 	int count = 0;
-	for (int i = 0; i < 25; i++)
-		for (int y = 0; y < 25; y++)		
+	for (int i = 0; i < 50; i++)
+		for (int y = 0; y < 50; y++)		
 			_instancedSpheres->AddInstance(XMFLOAT3(40 + (i * spacing), 5.0f + (2.0f * _sineWaves[count ++ % 2]), 40 + (y * spacing)), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
 		
 	_instancedSpheres->BuildInstanceBuffer();	
@@ -280,13 +280,12 @@ void SponzaTestScene::Update()
 
 	float spacing = 2.0f;
 	int count = 0;
-	for (int i = 0; i < 25; i++)
-		for (int y = 0; y < 25; y++)
+	for (int i = 0; i < 50; i++)
+		for (int y = 0; y < 50; y++)
 		{
-			_instancedSpheres->modelInstances[count].worldMatrix = MATH_HELPERS::CreateWorldMatrix(XMFLOAT3(40 + (i * spacing), 5.0f + (2.0f * _sineWaves[count % 2]), 40 + (y * spacing)), XMFLOAT3(0, 0, -90 + (90 * _sineWaves[count % 2])), XMFLOAT3(1.5f + (1.0f * _sineWaves[count % 2]), 1.5f + (1.0f * _sineWaves[count % 2]), 1.5f + (1.0f * _sineWaves[count % 2])));			
+			_instancedSpheres->modelInstances[count].worldMatrix = MATH_HELPERS::CreateWorldMatrix(XMFLOAT3(40 + (i * spacing), 5.0f + (2.0f * _sineWaves[count % 2]), 40 + (y * spacing)), XMFLOAT3(0, 0, -90 + (90 * _sineWaves[count % 2])), XMFLOAT3(1.0f + (1.0f * _sineWaves[count % 2]), 1.0f + (1.0f * _sineWaves[count % 2]), 1.0f + (1.0f * _sineWaves[count % 2])));			
 			count++;
 		}
 		
 	_instancedSpheres->BuildInstanceBuffer();
-
 }

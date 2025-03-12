@@ -1,11 +1,11 @@
 #pragma once
 #include <Windows.h>
 
-class Time
+class GameTime
 {
 public:
-	Time();
-	~Time();
+	GameTime();
+	~GameTime();
 
 	// update time and handle when window changes
 	void Update();

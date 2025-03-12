@@ -66,7 +66,7 @@
     <ClCompile Include="Code\Managers\LightManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Utils\Time.cpp">
+    <ClCompile Include="Code\Utils\GameTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Renderer\Renderer.cpp">
@@ -263,7 +263,7 @@
     <ClInclude Include="Code\Managers\LightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Utils\Time.h">
+    <ClInclude Include="Code\Utils\GameTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Renderer\Renderer.h">

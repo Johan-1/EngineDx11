@@ -1,9 +1,9 @@
-#include "Time.h"
+#include "GameTime.h"
 #include <iostream>
 #include <mmsystem.h>
 #include "SystemDefs.h"
 
-Time::Time() :
+GameTime::GameTime() :
 	_ticksPerSecond(0),	
 	_startTimeDelta(0),
 	_delta(0),
@@ -14,23 +14,23 @@ Time::Time() :
 {
 }
 
-Time::~Time()
+GameTime::~GameTime()
 {
 }
 
-void Time::OnWindowChange()
+void GameTime::OnWindowChange()
 {
 	_useLastDelta = true;
 	_lastDelta    = _delta;
 }
 
-void Time::Update() 
+void GameTime::Update()
 {
 	CalculateDelta();
 	CalculateFPS();
 }
 
-void Time::CalculateDelta() 
+void GameTime::CalculateDelta()
 {
 	// if this is the first frame of the application
 	// setup the start delta
@@ -74,7 +74,7 @@ void Time::CalculateDelta()
 
 }
 
-void Time::CalculateFPS() 
+void GameTime::CalculateFPS()
 {
 	// count the frames and when one second have passed set fps to number of frames and reset count and start time
 	_count++;

@@ -3,7 +3,7 @@
 DXManager*     Systems::dxManager     = nullptr;
 GuiManager*    Systems::guiManager    = nullptr;
 Input*         Systems::input         = nullptr;
-Time*          Systems::time          = nullptr;
+GameTime*      Systems::time          = nullptr;
 CameraManager* Systems::cameraManager = nullptr;
 LightManager*  Systems::lightManager  = nullptr;
 TexturePool*   Systems::texturePool   = nullptr;
@@ -28,7 +28,7 @@ void Systems::InitSystems(Window* window, float screenWidth, float screenHeight,
 	input->InitializeInputDevices(window->hInstance, window->hwnd);
 
 	// Create misc systems
-	time          = new Time();
+	time          = new GameTime();
 	cameraManager = new CameraManager();
 	lightManager  = new LightManager();
 	texturePool   = new TexturePool();

@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F2180BD4-941A-457D-94A5-584C2E22F6CA}</ProjectGuid>
     <RootNamespace>Engine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -211,7 +211,7 @@
     <ClCompile Include="Code\Utils\DebugQuadHandler.cpp" />
     <ClCompile Include="Code\Utils\SystemDefs.cpp" />
     <ClCompile Include="Code\Utils\TexturePool.cpp" />
-    <ClCompile Include="Code\Utils\Time.cpp" />
+    <ClCompile Include="Code\Utils\GameTime.cpp" />
     <ClCompile Include="Code\Utils\Window.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -280,7 +280,7 @@
     <ClInclude Include="Code\Utils\ShaderHelpers.h" />
     <ClInclude Include="Code\Utils\SystemDefs.h" />
     <ClInclude Include="Code\Utils\TexturePool.h" />
-    <ClInclude Include="Code\Utils\Time.h" />
+    <ClInclude Include="Code\Utils\GameTime.h" />
     <ClInclude Include="Code\Utils\VectorHelpers.h" />
     <ClInclude Include="Code\Utils\Window.h" />
   </ItemGroup>
