@@ -4,6 +4,8 @@
 #BuildFolders
 Temp
 Build
+Debug
+Release
 
 #local tools
 enginecommandline.lnk
